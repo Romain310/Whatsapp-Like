@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Whattsapp version ESI</title>
+    <style>
+        body {
+            background: linear-gradient(45deg, #9799dd 0%, #ffffff 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .content {
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+            font-size: 3em;
+        }
+        p {
+            margin: 0;
+            font-size: 1.5em;
+        }
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+        .button a {
+            text-decoration: none;
+            color: white;
+            background: linear-gradient(45deg, #0d5fe3 0%, #04ff00 100%);
+            padding: 20px 40px;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+        .button a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <h1>Whatsapp version ESI</h1>
+    <p>Voici notre site</p>
+    <div class="buttons">
+        <div class="buttons">
+            <div class="button">
+                <a href="{{ path('conversation') }}">Accéder aux conversations</a>
+            </div>
+            <div class="button">
+                <a href="{{ path('membres') }}">Voir les membres</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
