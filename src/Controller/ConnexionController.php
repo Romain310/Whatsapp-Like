@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class connexionController extends AbstractController
+class ConnexionController extends AbstractController
 {
     #[Route(name: 'connexion')]
     public function login(Request $request): Response
