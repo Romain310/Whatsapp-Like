@@ -12,7 +12,7 @@ class HomeController extends AbstractController
     public function index(): Response
     {
         #Si l'utilisateur n'est pas connecté.
-        return $this->render('connexion.html.twig');
+        return $this->render('index.html.twig');
 
         #Si l'utilisateur est connecté.
         #return $this->render('index.html.twig');

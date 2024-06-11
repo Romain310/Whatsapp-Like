@@ -1,46 +1,46 @@
-.logo {
-    width: 125px;
-}
-.login-container {
-    background-color: white;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 300px;
-}
-.login-container h1 {
-    margin-bottom: 20px;
-    font-size: 2em;
-}
-.login-container input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-.login-container button {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 5px;
-    background-color: #007BFF;
-    color: white;
-    font-size: 1em;
-    cursor: pointer;
-}
-.login-container button:hover {
-    background-color: #0056b3;
-}
-.login-container .forgot-create {
-    margin-top: 20px;
-}
-.login-container .forgot-create a {
-    text-decoration: none;
-    color: #007BFF;
-}
-.login-container .forgot-create a:hover {
-    color: #0056b3;
-}
+/*.logo {*/
+/*    width: 125px;*/
+/*}*/
+/*.login-container {*/
+/*    background-color: white;*/
+/*    padding: 40px;*/
+/*    border-radius: 10px;*/
+/*    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
+/*    text-align: center;*/
+/*    width: 300px;*/
+/*}*/
+/*.login-container h1 {*/
+/*    margin-bottom: 20px;*/
+/*    font-size: 2em;*/
+/*}*/
+/*.login-container input {*/
+/*    width: 100%;*/
+/*    padding: 10px;*/
+/*    margin: 10px 0;*/
+/*    border: 1px solid #ccc;*/
+/*    border-radius: 5px;*/
+/*}*/
+/*.login-container button {*/
+/*    width: 100%;*/
+/*    padding: 10px;*/
+/*    margin: 10px 0;*/
+/*    border: none;*/
+/*    border-radius: 5px;*/
+/*    background-color: #007BFF;*/
+/*    color: white;*/
+/*    font-size: 1em;*/
+/*    cursor: pointer;*/
+/*}*/
+/*.login-container button:hover {*/
+/*    background-color: #0056b3;*/
+/*}*/
+/*.login-container .forgot-create {*/
+/*    margin-top: 20px;*/
+/*}*/
+/*.login-container .forgot-create a {*/
+/*    text-decoration: none;*/
+/*    color: #007BFF;*/
+/*}*/
+/*.login-container .forgot-create a:hover {*/
+/*    color: #0056b3;*/
+/*}*/
