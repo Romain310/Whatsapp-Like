@@ -46,7 +46,9 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('Inscription', SubmitType::class)
+            ->add('submit', SubmitType::class, array(
+                'attr' => array('class' => 'btn btn-primary')
+            ));
         ;
     }
 

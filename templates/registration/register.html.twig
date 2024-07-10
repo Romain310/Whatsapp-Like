@@ -3,19 +3,68 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
 
     {{ form_errors(registrationForm) }}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.nom) }}
-        {{ form_row(registrationForm.prenom) }}
-        {{ form_row(registrationForm.mail) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+    {% if app.user %}
+        <script type="text/javascript">
+            window.location.href = "{{ path('conversation') }}";
+        </script>
+    {% endif %}
 
-{#        <button type="submit" class="btn">Register</button>#}
-    {{ form_end(registrationForm) }}
+    {% if not app.user %}
+
+
+
+        <div class="container-fluid h-100">
+            <div class="row h-100">
+                <div class="col-6 m-auto">
+                    <div class="border border-light p-2 border-2 rounded-2 m-auto">
+
+                        <img src="{{ asset('images/logo.png') }}" class="rounded mx-auto d-block">
+                        <h1 class="h3 mb-3 font-weight-normal text-center"><b>S'inscrire</b></h1>
+
+                        {{ form_start(registrationForm) }}
+
+                        <label for="{{ registrationForm.nom.vars.id }}"
+                               class="{{ registrationForm.nom.vars.required ? 'required' }}">
+                            {{ registrationForm.nom.vars.label }}
+                        </label>
+
+                        <div class="mb-3 form-control">
+                            {{ form_row(registrationForm.nom) }}
+                        </div>
+                        <div class="mb-3 form-control">
+                            {{ form_row(registrationForm.prenom) }}
+                        </div>
+                        <div class="mb-3 form-control">
+                            {{ form_row(registrationForm.mail) }}
+                        </div>
+                        <div class="mb-3 form-control">
+                            {{ form_row(registrationForm.plainPassword, {label: 'Password'}) }}
+                        </div>
+
+
+
+
+                        {{ form_row(registrationForm.agreeTerms) }}
+
+
+
+                        <div class="row text-center">
+                            {{ form_end(registrationForm) }}
+                            <a href="{{ path('app_login') }}"><button type="submit" class="btn btn-secondary">Se connecter</button></a>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+
+
+
 {% endblock %}
