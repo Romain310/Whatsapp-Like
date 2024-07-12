@@ -1,5 +1,20 @@
+/*!**/
+/*Css présent sur toutes les pages*/
+/*<link rel="stylesheet" href="{{ asset('styles/app.css') }}">*/
+/**!*/
+
 body {
     background: linear-gradient(45deg, #9799dd 0%, #ffffff 100%);
-    height: 100vh;
+    /*display: flex;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
+    max-height: 100vh!important;
+    height: 100vh!important;
+    overflow: auto;
+    /*margin: 0;*/
     font-family: Arial, sans-serif;
+}
+
+.hidden {
+    display: none;
 }

@@ -1,63 +1,214 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Whattsapp version ESI</title>
-    <style>
-        body {
-            background: linear-gradient(45deg, #9799dd 0%, #ffffff 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-        .content {
-            text-align: center;
-        }
-        h1 {
-            margin: 0;
-            font-size: 3em;
-        }
-        p {
-            margin: 0;
-            font-size: 1.5em;
-        }
-        .buttons {
-            margin-top: 20px;
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-        }
-        .button a {
-            text-decoration: none;
-            color: white;
-            background: linear-gradient(45deg, #0d5fe3 0%, #04ff00 100%);
-            padding: 20px 40px;
-            border-radius: 5px;
-            font-size: 1em;
-            transition: background-color 0.3s ease;
-        }
-        .button a:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-<div class="content">
-    <h1>Whatsapp version ESI</h1>
-    <p>Voici notre site</p>
-    <div class="buttons">
-        <div class="buttons">
-            <div class="button">
-                <a href="{{ path('conversation') }}">Accéder aux conversations</a>
+{% extends 'base.html.twig' %}
+
+{% block title %}Messagerie{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="d-none d-lg-block col-lg-3">
+                <h3>Groupes de discussions</h3>
             </div>
-            <div class="button">
-                <a href="{{ path('membres') }}">Voir les membres</a>
+            <div class="col-lg-9 col-sm-12">
+                <nav class="navbar">
+                    <div class="container-fluid">
+                        <div class="d-lg-none">
+                            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvaContent" aria-controls="offcanvaContent" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </div>
+                        <a class="navbar-brand" href="#">WhatsApp-Like</a>
+                        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvaContent" aria-labelledby="offcanvaContentLabel">
+                            <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="offcanvaContentLabel">WhatsApp-Like</h5>
+                                <button type="button" class="btn-close btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                                <div class="card">
+                                    <div class="card-header">
+                                        Comissions
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">An item</li>
+                                        <li class="list-group-item">A second item</li>
+                                        <li class="list-group-item">A third item</li>
+                                    </ul>
+                                </div>
+                                <hr>
+                                <div class="card">
+                                    <div class="card-header">
+                                        Comissions Temporaires
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">An item</li>
+                                        <li class="list-group-item">A second item</li>
+                                        <li class="list-group-item">A third item</li>
+                                    </ul>
+                                </div>
+                                <hr>
+                                <div class="card">
+                                    <div class="card-header">
+                                        Comissions Temporaires (archivés)
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">An item</li>
+                                        <li class="list-group-item">A second item</li>
+                                        <li class="list-group-item">A third item</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row" style="height: 89vh; overflow: unset;">
+            <div class="d-none d-lg-block col-lg-3">
+                <div class="card">
+                    <div class="card-header">
+                        Comissions
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">An item</li>
+                        <li class="list-group-item">A second item</li>
+                        <li class="list-group-item">A third item</li>
+                    </ul>
+                </div>
+                <hr>
+                <div class="card">
+                    <div class="card-header">
+                        Comissions Temporaires
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">An item</li>
+                        <li class="list-group-item">A second item</li>
+                        <li class="list-group-item">A third item</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-12 col-lg-9" style="height: 100%">
+                <div class="overflow-y-scroll" style="max-height: 85%">
+                    <div class="row" style="width: 80%">
+                        <div class="col-3">Message 1</div>
+                    </div>
+                    <div class="row justify-content-end" style="width: 80%">
+                        <div class="col-3 justify-content-end">Message 2</div>
+                    </div>
+                    <div class="row" style="width: 80%">
+                        <div class="col-3">Message 1</div>
+                    </div>
+                    <div class="row justify-content-end" style="width: 80%">
+                        <div class="col-3 justify-content-end">Message 2</div>
+                    </div>
+                    <div class="row" style="width: 80%">
+                        <div class="col-3">Message 1</div>
+                    </div>
+                    <div class="row justify-content-end" style="width: 80%">
+                        <div class="col-3 justify-content-end">Message 2</div>
+                    </div>
+                    <div class="row" style="width: 80%">
+                        <div class="col-3">Message 1</div>
+                    </div>
+                    <div class="row justify-content-end" style="width: 80%">
+                        <div class="col-3 justify-content-end">Message 2</div>
+                    </div>
+                    <div class="row" style="width: 80%">
+                        <div class="col-3">Message 1</div>
+                    </div>
+                    <div class="row justify-content-end" style="width: 80%">
+                        <div class="col-3 justify-content-end">Message 2</div>
+                    </div>
+                    <div class="row" style="width: 80%">
+                        <div class="col-3">Message 1</div>
+                    </div>
+                    <div class="row justify-content-end" style="width: 80%">
+                        <div class="col-3 justify-content-end">Message 2</div>
+                    </div>
+                    <div class="row" style="width: 80%">
+                        <div class="col-3">Message 1</div>
+                    </div>
+                    <div class="row justify-content-end" style="width: 80%">
+                        <div class="col-3 justify-content-end">Message 2</div>
+                    </div>
+                    <div class="row" style="width: 80%">
+                        <div class="col-3">Message 1</div>
+                    </div>
+                    <div class="row justify-content-end" style="width: 80%">
+                        <div class="col-3 justify-content-end">Message 2</div>
+                    </div>
+                    <div class="row" style="width: 80%">
+                        <div class="col-3">Message 1</div>
+                    </div>
+                    <div class="row justify-content-end" style="width: 80%">
+                        <div class="col-3 justify-content-end">Message 2</div>
+                    </div>
+                    <div class="row" style="width: 80%">
+                        <div class="col-3">Message 1</div>
+                    </div>
+                    <div class="row justify-content-end" style="width: 80%">
+                        <div class="col-3 justify-content-end">Message 2</div>
+                    </div>
+                    <div class="row" style="width: 80%">
+                        <div class="col-3">Message 1</div>
+                    </div>
+                    <div class="row justify-content-end" style="width: 80%">
+                        <div class="col-3 justify-content-end">Message 2</div>
+                    </div>
+                    <div class="row" style="width: 80%">
+                        <div class="col-3">Message 1</div>
+                    </div>
+                    <div class="row justify-content-end" style="width: 80%">
+                        <div class="col-3 justify-content-end">Message 2</div>
+                    </div>
+                    <div class="row" style="width: 80%">
+                        <div class="col-3">Message 1</div>
+                    </div>
+                    <div class="row justify-content-end" style="width: 80%">
+                        <div class="col-3 justify-content-end">Message 2</div>
+                    </div>
+                    <div class="row" style="width: 80%">
+                        <div class="col-3">Message 1</div>
+                    </div>
+                    <div class="row justify-content-end" style="width: 80%">
+                        <div class="col-3 justify-content-end">Message 2</div>
+                    </div>
+                    <div class="row" style="width: 80%">
+                        <div class="col-3">Message 1</div>
+                    </div>
+                    <div class="row justify-content-end" style="width: 80%">
+                        <div class="col-3 justify-content-end">Message 2</div>
+                    </div>
+                    <div class="row" style="width: 80%">
+                        <div class="col-3">Message 1</div>
+                    </div>
+                    <div class="row justify-content-end" style="width: 80%">
+                        <div class="col-3 justify-content-end">Message 2</div>
+                    </div>
+                </div>
+                <form method="post">
+                    <div class="fixed-bottom input-group mb-3">
+                        <!-- TODO mettre le input hidden des commissions -->
+                        <input type="text" class="form-control" placeholder="Message" aria-label="Message" aria-describedby="basic-addon2">
+                        <div class="input-group-append align-content-center">
+                            <input class="btn btn-success bg-gradient" value="Envoyer" type="submit">
+{#                            <button type="submit" class="bg-gradient bg-success border-success" style="padding: 10%;">#}
+{#                                <svg xmlns="http://www.w3.org/2000/svg" width="100%" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">#}
+{#                                    <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z"/>#}
+{#                                </svg>#}
+{#                            </button>#}
+                        </div>
+
+                    </div>
+                </form>
+{#                <div class="fixed-bottom">#}
+{#                    <form method="post">#}
+{#                        <!-- TODO mettre le input hidden des commissions -->#}
+{#                        <label>#}
+{#                            <input type="text" name="message" placeholder="Message">#}
+{#                        </label>#}
+{#                        <input value="Envoyer" type="submit" class="bi bi-send">#}
+{#                    </form>#}
+{#                </div>#}
             </div>
         </div>
     </div>
-</div>
-</body>
-</html>
+{% endblock %}
