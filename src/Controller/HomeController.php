@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Message;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,9 +14,9 @@ class HomeController extends AbstractController
     #[Route('/', name: 'home')]
     public function index(EntityManagerInterface $entityManager): Response
     {
-        $users = $entityManager->getRepository(User::class)->findAll();
+        $messages = $entityManager->getRepository(Message::class)->findAll();
 
-        $params = ["users" => $users];
+        $params = ["messages" => $messages];
 
         #Si l'utilisateur n'est pas connecté.
         return $this->render('index.html.twig', $params);
