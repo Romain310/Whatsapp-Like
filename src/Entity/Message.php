@@ -34,6 +34,10 @@ class Message
     #[ORM\ManyToMany(targetEntity: CommissionTemporaire::class, inversedBy: 'messages')]
     private Collection $commissionsTemporaires;
 
+    #[ORM\ManyToOne(inversedBy: 'messages')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->commissions = new ArrayCollection();
@@ -113,6 +117,18 @@ class Message
     public function removeCommissionsTemporaire(CommissionTemporaire $commissionsTemporaire): static
     {
         $this->commissionsTemporaires->removeElement($commissionsTemporaire);
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
