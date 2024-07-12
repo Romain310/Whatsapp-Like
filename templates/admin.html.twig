@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page Admin{% endblock %}
+
+{% block body %}
+    <div class="content">
+        <a class="button back-button" href="{{ path('home') }}">Retour à l'index</a>
+        <h1>Page Admin</h1>
+        <p>Voici la liste des utilisateurs</p>
+        <div class="user-list">
+            <table class="table table-bordered">
+                <thead>
+                <tr class="text-center">
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Adresse mail</th>
+                    <th>Rôle</th>
+                    <th colspan="2">Paramètres utilisateur</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.nom }}</td>
+                        <td>{{ user.prenom }}</td>
+                        <td>{{ user.mail }}</td>
+{#                        <td>{{ user.roles | join(', ') }}</td>#}
+                        <td>{% set roleNames = {
+                                'ROLE_USER': 'Utilisateur',
+                                'ROLE_ADMIN': 'Administrateur'
+                            } %}
+                            {{ user.roles | map(role => roleNames[role] | default(role)) | join(', ') }}</td>
+                        <td><div class="text-center">
+                                <button type="submit" class="btn btn-primary">Modifier</button>
+                            </div></td>
+                        <td><div class="text-center">
+                                <button type="submit" class="btn btn-danger">Supprimer</button>
+                            </div></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <button type="submit" class="btn btn-primary">Ajouter</button>
+
+        <div class="container">
+            <h1 class="text-success">
+                GeeksforGeeks
+            </h1>
+            <h2>Bootstrap 5 Modal Vertically centered</h2>
+            <button type="button"
+                    class="btn btn-success"
+                    data-toggle="modal"
+                    data-target="#GFG">
+                Launch Vertically Centered modal
+            </button>
+
+            <div class="modal fade" id="GFG">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                I am modal vertically centered
+                            </h5>
+
+                        </div>
+                        <div class="modal-body">
+                            GeeksforGeeks
+                            <img src=
+                                 "https://media.geeksforgeeks.org/wp-content/cdn-uploads/Java.png"
+                                 height="100px"
+                                 width="300px">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn"
+                                    data-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="button" class="btn">
+                                Save changes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
