@@ -87,102 +87,45 @@
             </div>
             <div class="col-12 col-lg-9" style="height: 100%">
                 <div class="overflow-y-scroll" style="max-height: 85%">
-                    <div class="row" style="width: 99%">
-                        <div class="col-6 text-break">Message 1</div>
-                    </div>
-                    <div class="row justify-content-end" style="width: 99%">
-                        <div class="col-6 text-break justify-content-end">Message 2</div>
-                    </div>
-                    <div class="row" style="width: 99%">
-                        <div class="col-6 text-break">Message 1</div>
-                    </div>
-                    <div class="row justify-content-end" style="width: 99%">
-                        <div class="col-6 text-break justify-content-end">Message 2</div>
-                    </div>
-                    <div class="row" style="width: 99%">
-                        <div class="col-6 text-break">Message 155555555555555555555555555555555555555555555555555555555555</div>
-                    </div>
-                    <div class="row justify-content-end text-end" style="width: 99%">
-                        <div class="col-6 justify-content-end text-break text-end">Message 255555555555555555555555555555555555555555555555555</div>
-                    </div>
-                    <div class="row" style="width: 99%">
-                        <div class="col-6 text-break">Message 1</div>
-                    </div>
-                    <div class="row justify-content-end" style="width: 99%">
-                        <div class="col-6 text-break justify-content-end">Message 2</div>
-                    </div>
-                    <div class="row" style="width: 99%">
-                        <div class="col-6 text-break">Message 1</div>
-                    </div>
-                    <div class="row justify-content-end" style="width: 99%">
-                        <div class="col-6 text-break justify-content-end">Message 2</div>
-                    </div>
-                    <div class="row" style="width: 99%">
-                        <div class="col-6 text-break">Message 1</div>
-                    </div>
-                    <div class="row justify-content-end" style="width: 99%">
-                        <div class="col-6 text-break justify-content-end">Message 2</div>
-                    </div>
-                    <div class="row" style="width: 99%">
-                        <div class="col-6 text-break">Message 1</div>
-                    </div>
-                    <div class="row justify-content-end" style="width: 99%">
-                        <div class="col-6 text-break justify-content-end">Message 2</div>
-                    </div>
-                    <div class="row" style="width: 99%">
-                        <div class="col-6 text-break">Message 1</div>
-                    </div>
-                    <div class="row justify-content-end" style="width: 99%">
-                        <div class="col-6 text-break justify-content-end">Message 2</div>
-                    </div>
-                    <div class="row" style="width: 99%">
-                        <div class="col-6 text-break">Message 1</div>
-                    </div>
-                    <div class="row justify-content-end" style="width: 99%">
-                        <div class="col-6 text-break justify-content-end">Message 2</div>
-                    </div>
-                    <div class="row" style="width: 99%">
-                        <div class="col-6 text-break">Message 1</div>
-                    </div>
-                    <div class="row justify-content-end" style="width: 99%">
-                        <div class="col-6 text-break justify-content-end">Message 2</div>
-                    </div>
-                    <div class="row" style="width: 99%">
-                        <div class="col-6 text-break">Message 1</div>
-                    </div>
-                    <div class="row justify-content-end" style="width: 99%">
-                        <div class="col-6 text-break justify-content-end">Message 2</div>
-                    </div>
-                    <div class="row" style="width: 99%">
-                        <div class="col-6 text-break">Message 1</div>
-                    </div>
-                    <div class="row justify-content-end" style="width: 99%">
-                        <div class="col-6 text-break justify-content-end">Message 2</div>
-                    </div>
-                    <div class="row" style="width: 99%">
-                        <div class="col-6 text-break">Message 1</div>
-                    </div>
-                    <div class="row justify-content-end" style="width: 99%">
-                        <div class="col-6 text-break justify-content-end">Message 2</div>
-                    </div>
-                    <div class="row" style="width: 99%">
-                        <div class="col-6 text-break">Message 1</div>
-                    </div>
-                    <div class="row justify-content-end" style="width: 99%">
-                        <div class="col-6 text-break justify-content-end">Message 2</div>
-                    </div>
-                    <div class="row" style="width: 99%">
-                        <div class="col-6 text-break">Message 1</div>
-                    </div>
-                    <div class="row justify-content-end" style="width: 99%">
-                        <div class="col-6 text-break justify-content-end">Message 2</div>
-                    </div>
-                    <div class="row" style="width: 99%">
-                        <div class="col-6 text-break">Message 1</div>
-                    </div>
-                    <div class="row justify-content-end" style="width: 99%">
-                        <div class="col-6 text-break justify-content-end">Message 2</div>
-                    </div>
+
+                    {% for message in messages %}
+{#                        {% if message.commissions ==  %}#}
+                        {% if app.user.id ==  message.user.id %}
+                            <div class="row justify-content-end" style="width: 99%">
+                                <div class="col-6 text-break justify-content-end">
+                                    <div>
+                                            {% if is_granted('ROLE_USER') %}
+                                                <span class="badge rounded-pill text-bg-primary">Utilisateur</span>
+                                            {% endif %}
+                                            {% if is_granted('ROLE_ADMIN') %}
+                                                <span class="badge rounded-pill text-bg-danger">Admin</span>
+                                            {% endif %}
+                                        <b>{{ message.user.nom }} {{ message.user.prenom }}:</b>
+                                    </div>
+                                    <div>
+                                        {{ message.contenu }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="row" style="width: 99%">
+                                <div class="col-6 text-break">
+                                    <div>
+                                        {% if is_granted('ROLE_USER') %}
+                                            <span class="badge rounded-pill text-bg-primary">Utilisateur</span>
+                                        {% endif %}
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                            <span class="badge rounded-pill text-bg-danger">Admin</span>
+                                        {% endif %}
+                                        <b>{{ message.user.nom }} {{ message.user.prenom }}:</b>
+                                    </div>
+                                    <div>
+                                        {{ message.contenu }}
+                                    </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
                 </div>
                 <form method="post">
                     <div class="fixed-bottom input-group p-2">
@@ -190,24 +133,18 @@
                         <input type="text" class="form-control" placeholder="Message" aria-label="Message" aria-describedby="basic-addon2">
                         <div class="input-group-append align-content-center">
                             <input class="btn btn-success bg-gradient" value="Envoyer" type="submit">
-{#                            <button type="submit" class="bg-gradient bg-success border-success" style="padding: 10%;">#}
-{#                                <svg xmlns="http://www.w3.org/2000/svg" width="100%" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">#}
-{#                                    <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z"/>#}
-{#                                </svg>#}
-{#                            </button>#}
                         </div>
-
                     </div>
                 </form>
-{#                <div class="fixed-bottom">#}
-{#                    <form method="post">#}
-{#                        <!-- TODO mettre le input hidden des commissions -->#}
-{#                        <label>#}
-{#                            <input type="text" name="message" placeholder="Message">#}
-{#                        </label>#}
-{#                        <input value="Envoyer" type="submit" class="bi bi-send">#}
-{#                    </form>#}
-{#                </div>#}
+                {#                <div class="fixed-bottom">#}
+                {#                    <form method="post">#}
+                {#                        <!-- TODO mettre le input hidden des commissions -->#}
+                {#                        <label>#}
+                {#                            <input type="text" name="message" placeholder="Message">#}
+                {#                        </label>#}
+                {#                        <input value="Envoyer" type="submit" class="bi bi-send">#}
+                {#                    </form>#}
+                {#                </div>#}
             </div>
         </div>
     </div>

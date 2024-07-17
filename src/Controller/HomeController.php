@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Commission;
 use App\Entity\Message;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,4 +22,15 @@ class HomeController extends AbstractController
         #Si l'utilisateur n'est pas connecté.
         return $this->render('index.html.twig', $params);
     }
+//    #[Route('/comission/{idCommission}', name: 'messageCommission')]
+//    public function messageCommission(EntityManagerInterface $entityManager, int $idCommission): Response
+//    {
+//        $commission = $entityManager->getRepository(Commission::class)->find($idCommission);
+////        $messages = $entityManager->getRepository(Message::class)->findAll();
+//
+//        $params = ["messages" => $commission->getMessages()];
+//
+//        #Si l'utilisateur n'est pas connecté.
+//        return $this->render('index.html.twig', $params);
+//    }
 }

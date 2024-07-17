@@ -8,7 +8,7 @@
 
     {% if app.user %}
         <script type="text/javascript">
-            window.location.href = "{{ path('conversation') }}";
+            window.location.href = "{{ path('home') }}";
         </script>
     {% endif %}
 
@@ -21,15 +21,10 @@
                 <div class="col-6 m-auto">
                     <div class="border border-light p-2 border-2 rounded-2 m-auto">
 
-                        <img src="{{ asset('images/logo.png') }}" class="rounded mx-auto d-block">
+                        <img alt="Logo Limayrac" src="{{ asset('images/logo.png') }}" class="rounded mx-auto d-block img-fluid">
                         <h1 class="h3 mb-3 font-weight-normal text-center"><b>S'inscrire</b></h1>
 
                         {{ form_start(registrationForm) }}
-
-                        <label for="{{ registrationForm.nom.vars.id }}"
-                               class="{{ registrationForm.nom.vars.required ? 'required' }}">
-                            {{ registrationForm.nom.vars.label }}
-                        </label>
 
                         <div class="mb-3 form-control">
                             {{ form_row(registrationForm.nom) }}
@@ -43,28 +38,14 @@
                         <div class="mb-3 form-control">
                             {{ form_row(registrationForm.plainPassword, {label: 'Password'}) }}
                         </div>
-
-
-
-
                         {{ form_row(registrationForm.agreeTerms) }}
-
-
-
                         <div class="row text-center">
                             {{ form_end(registrationForm) }}
                             <a href="{{ path('app_login') }}"><button type="submit" class="btn btn-secondary">Se connecter</button></a>
                         </div>
-
-
-
                     </div>
                 </div>
             </div>
         </div>
     {% endif %}
-
-
-
-
 {% endblock %}
