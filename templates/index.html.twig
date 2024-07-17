@@ -4,79 +4,108 @@
 
 {% block body %}
     <div class="container-fluid">
-        <div class="row">
-            <div class="d-none d-lg-block col-lg-3">
-                <h3>Groupes de discussions</h3>
-            </div>
-            <div class="col-lg-9 col-sm-12">
-                <nav class="navbar">
-                    <div class="container-fluid">
-                        <div class="d-lg-none">
-                            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvaContent" aria-controls="offcanvaContent" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                        </div>
-                        <a class="navbar-brand" href="#">WhatsApp-Like</a>
-                        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvaContent" aria-labelledby="offcanvaContentLabel">
-                            <div class="offcanvas-header">
-                                <h5 class="offcanvas-title" id="offcanvaContentLabel">WhatsApp-Like</h5>
-                                <button type="button" class="btn-close btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                            </div>
-                            <div class="offcanvas-body">
-                                <div class="card">
-                                    <div class="card-header">
-                                        Comissions
-                                    </div>
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">An item</li>
-                                        <li class="list-group-item">A second item</li>
-                                        <li class="list-group-item">A third item</li>
-                                    </ul>
-                                </div>
-                                <hr>
-                                <div class="card">
-                                    <div class="card-header">
-                                        Comissions Temporaires
-                                    </div>
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">An item</li>
-                                        <li class="list-group-item">A second item</li>
-                                        <li class="list-group-item">A third item</li>
-                                    </ul>
-                                </div>
-                                <hr>
-                                <div class="card">
-                                    <div class="card-header">
-                                        Comissions Temporaires (archivés)
-                                    </div>
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">An item</li>
-                                        <li class="list-group-item">A second item</li>
-                                        <li class="list-group-item">A third item</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </div>
+    <div class="row">
+        <div class="d-none d-lg-block col-lg-3">
+            <h3 class="text-center">Groupes de discussions</h3>
         </div>
-        <div class="row" style="height: 89vh; overflow: unset;">
-            <div class="d-none d-lg-block col-lg-3">
-                <div class="card">
-                    <div class="card-header">
-                        Comissions
+        <div class="col-lg-9 col-sm-12">
+            <nav class="navbar">
+                <div class="container-fluid">
+                    <div class="d-lg-none">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvaContent" aria-controls="offcanvaContent" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
                     </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">An item</li>
-                        <li class="list-group-item">A second item</li>
-                        <li class="list-group-item">A third item</li>
-                    </ul>
+                    <div>
+                        <a class="navbar-brand" href="#"><b>WhatsApp-Like</b></a>
+                    </div>
+                    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvaContent" aria-labelledby="offcanvaContentLabel">
+                        <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="offcanvaContentLabel">WhatsApp-Like ​📞​</h5>
+                            <button type="button" class="btn-close btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                            <div class="card">
+                                <div class="card-header">
+                                    <b>Commissions</b>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item active" aria-current="true">EXEMPLE ACTIF</li>
+                                    <li class="list-group-item">Animation 🍻​</li>
+                                    <li class="list-group-item">Communication 🖥️​</li>
+                                    <li class="list-group-item">Finances 💰​</li>
+                                    <li class="list-group-item">Restauration 🍔​</li>
+                                </ul>
+                            </div>
+                            <hr>
+                            <div class="card">
+                                <div class="card-header">
+                                    <b>Commissions Temporaires</b>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">An item</li>
+                                    <li class="list-group-item">A second item</li>
+                                    <li class="list-group-item">A third item</li>
+                                </ul>
+                            </div>
+                            {% if is_granted('ROLE_USER') %} {# TODO A changer en ROLE_ADMIN plus tard #}
+                                <hr>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <b>Commissions Temporaires 🔐​</b>
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">An item</li>
+                                        <li class="list-group-item">A second item</li>
+                                        <li class="list-group-item">A third item</li>
+                                    </ul>
+                                </div>
+                            {% endif %}
+                            <hr>
+                            {% if is_granted('ROLE_USER') %} {# TODO A changer en ROLE_ADMIN plus tard #}
+                                <button type="button" class="btn btn-primary" onclick="window.location.href='/admin'">Administration</button>
+                                <hr>
+                            {% endif %}
+                            <form action="{{ path('app_logout') }}" method="post">
+                                <button type="submit" class="btn btn-danger">Se déconnecter</button>
+                            </form>
+
+                        </div>
+                    </div>
                 </div>
+            </nav>
+        </div>
+    </div>
+    <div class="row" style="height: 89vh; overflow: unset;">
+        <div class="d-none d-lg-block col-lg-3">
+            <div class="card">
+                <div class="card-header">
+                    <b>Commissions</b>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item active" aria-current="true">EXEMPLE ACTIF</li>
+                    <li class="list-group-item">Animation 🍻​</li>
+                    <li class="list-group-item">Communication 🖥️​</li>
+                    <li class="list-group-item">Finances 💰​</li>
+                    <li class="list-group-item">Restauration 🍔​</li>
+                </ul>
+            </div>
+            <hr>
+            <div class="card">
+                <div class="card-header">
+                    <b>Commissions Temporaires</b>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                </ul>
+            </div>
+            {% if is_granted('ROLE_USER') %} {# TODO A changer en ROLE_ADMIN plus tard #}
                 <hr>
                 <div class="card">
                     <div class="card-header">
-                        Comissions Temporaires
+                        <b>Commissions Temporaires 🔐​</b>
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">An item</li>
@@ -84,46 +113,63 @@
                         <li class="list-group-item">A third item</li>
                     </ul>
                 </div>
-            </div>
-            <div class="col-12 col-lg-9" style="height: 100%">
-                <div class="overflow-y-scroll" style="max-height: 85%">
-
-                    {% for message in messages %}
-{#                        {% if message.commissions ==  %}#}
-                        {% if app.user.id ==  message.user.id %}
-                            <div class="row justify-content-end" style="width: 99%">
-                                <div class="col-6 text-break justify-content-end">
-                                    <div>
-                                            {% if is_granted('ROLE_USER') %}
-                                                <span class="badge rounded-pill text-bg-primary">Utilisateur</span>
-                                            {% endif %}
-                                            {% if is_granted('ROLE_ADMIN') %}
-                                                <span class="badge rounded-pill text-bg-danger">Admin</span>
-                                            {% endif %}
-                                        <b>{{ message.user.nom }} {{ message.user.prenom }}:</b>
-                                    </div>
-                                    <div>
-                                        {{ message.contenu }}
-                                    </div>
-                                </div>
-                            </div>
-                        {% else %}
-                            <div class="row" style="width: 99%">
-                                <div class="col-6 text-break">
-                                    <div>
-                                        {% if is_granted('ROLE_USER') %}
-                                            <span class="badge rounded-pill text-bg-primary">Utilisateur</span>
-                                        {% endif %}
-                                        {% if is_granted('ROLE_ADMIN') %}
-                                            <span class="badge rounded-pill text-bg-danger">Admin</span>
-                                        {% endif %}
-                                        <b>{{ message.user.nom }} {{ message.user.prenom }}:</b>
-                                    </div>
-                                    <div>
-                                        {{ message.contenu }}
-                                    </div>
-                            </div>
-                        {% endif %}
+            {% endif %}
+            <hr>
+            {% if is_granted('ROLE_USER') %} {# TODO A changer en ROLE_ADMIN plus tard #}
+                <button type="button" class="btn btn-primary" onclick="window.location.href='/admin'">Administration</button>
+                <hr>
+            {% endif %}
+            <form action="{{ path('app_logout') }}" method="post">
+                <button type="submit" class="btn btn-danger">Se déconnecter</button>
+            </form>
+        </div>
+        <div class="col-12 col-lg-8 bg-light border-2 rounded-2" style="height: 100%">
+            <div class="overflow-y-scroll" style="max-height: 85%">
+                <br>
+                {% for message in messages %}
+                {#                        {% if message.commissions ==  %}#}
+                {% if app.user.id ==  message.user.id %}
+                <div class="row justify-content-end" style="width: 99%">
+                    <div class="col-6 text-break justify-content-end border border-secondary-subtle border-2 rounded-5 bg-body-secondary">
+                        <div>
+                            {% if is_granted('ROLE_USER') %}
+                                <span class="badge rounded-pill text-bg-primary">Utilisateur</span>
+                            {% endif %}
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <span class="badge rounded-pill text-bg-danger">Admin</span>
+                            {% endif %}
+                            <b>{{ message.user.nom }} {{ message.user.prenom }}:</b>
+                        </div>
+                        <div>
+                            {{ message.contenu }}
+                        </div>
+                        <div class="text-end">
+                            <i>{{ message.dateEnvoi|date('d/m/Y H:i:s') }}</i>
+                        </div>
+                    </div>
+                    <hr class="opacity-0">
+                </div>
+            {% else %}
+                <div class="row" style="width: 99%">
+                    <div class="col-6 text-break border border-secondary-subtle border-2 rounded-5 bg-body-secondary">
+                        <div>
+                            {% if is_granted('ROLE_USER') %}
+                                <span class="badge rounded-pill text-bg-primary">Utilisateur</span>
+                            {% endif %}
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <span class="badge rounded-pill text-bg-danger">Admin</span>
+                            {% endif %}
+                            <b>{{ message.user.nom }} {{ message.user.prenom }}:</b>
+                        </div>
+                        <div>
+                            {{ message.contenu }}
+                        </div>
+                        <div class="text-end">
+                            <i>{{ message.dateEnvoi|date('d/m/Y H:i:s') }}</i>
+                        </div>
+                    </div>
+                    <hr class="opacity-0">
+                    {% endif %}
                     {% endfor %}
 
                 </div>
