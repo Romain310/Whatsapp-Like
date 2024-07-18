@@ -3,7 +3,7 @@
 {% block title %}Messagerie{% endblock %}
 
 {% block body %}
-    <div class="container-fluid">
+<div class="container-fluid">
     <div class="row">
         <div class="d-none d-lg-block col-lg-3">
             <h3 class="text-center">Groupes de discussions</h3>
@@ -77,35 +77,24 @@
         </div>
     </div>
     <div class="row" style="height: 89vh; overflow: unset;">
-        <div class="d-none d-lg-block col-lg-3">
-            <div class="card">
-                <div class="card-header">
-                    <b>Commissions</b>
+        <div class="d-none d-lg-block col-lg-3" style="height: 100%">
+            <div class="overflow-y-scroll" style="max-height: 95%">
+                <div class="card">
+                    <div class="card-header">
+                        <b>Commissions</b>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item active" aria-current="true">EXEMPLE ACTIF</li>
+                        <li class="list-group-item">Animation 🍻​</li>
+                        <li class="list-group-item">Communication 🖥️​</li>
+                        <li class="list-group-item">Finances 💰​</li>
+                        <li class="list-group-item">Restauration 🍔​</li>
+                    </ul>
                 </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item active" aria-current="true">EXEMPLE ACTIF</li>
-                    <li class="list-group-item">Animation 🍻​</li>
-                    <li class="list-group-item">Communication 🖥️​</li>
-                    <li class="list-group-item">Finances 💰​</li>
-                    <li class="list-group-item">Restauration 🍔​</li>
-                </ul>
-            </div>
-            <hr>
-            <div class="card">
-                <div class="card-header">
-                    <b>Commissions Temporaires</b>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">An item</li>
-                    <li class="list-group-item">A second item</li>
-                    <li class="list-group-item">A third item</li>
-                </ul>
-            </div>
-            {% if is_granted('ROLE_USER') %} {# TODO A changer en ROLE_ADMIN plus tard #}
                 <hr>
                 <div class="card">
                     <div class="card-header">
-                        <b>Commissions Temporaires 🔐​</b>
+                        <b>Commissions Temporaires</b>
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">An item</li>
@@ -113,66 +102,79 @@
                         <li class="list-group-item">A third item</li>
                     </ul>
                 </div>
-            {% endif %}
-            <hr>
-            {% if is_granted('ROLE_USER') %} {# TODO A changer en ROLE_ADMIN plus tard #}
-                <button type="button" class="btn btn-primary" onclick="window.location.href='/admin'">Administration</button>
+                {% if is_granted('ROLE_USER') %} {# TODO A changer en ROLE_ADMIN plus tard #}
+                    <hr>
+                    <div class="card">
+                        <div class="card-header">
+                            <b>Commissions Temporaires 🔐​</b>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">An item</li>
+                            <li class="list-group-item">A second item</li>
+                            <li class="list-group-item">A third item</li>
+                        </ul>
+                    </div>
+                {% endif %}
                 <hr>
-            {% endif %}
-            <form action="{{ path('app_logout') }}" method="post">
-                <button type="submit" class="btn btn-danger">Se déconnecter</button>
-            </form>
+                {% if is_granted('ROLE_USER') %} {# TODO A changer en ROLE_ADMIN plus tard #}
+                    <a href="/{{ path('admin') }}" class="btn btn-primary">Administration</a>
+                    <hr>
+                {% endif %}
+                <form action="{{ path('app_logout') }}" method="post">
+                    <button type="submit" class="btn btn-danger">Se déconnecter</button>
+                </form>
+            </div>
+
         </div>
-        <div class="col-12 col-lg-8 bg-light border-2 rounded-2" style="height: 100%">
-            <div class="overflow-y-scroll" style="max-height: 85%">
+        <div class="col-12 col-lg-9 " style="height: 100%">
+            <div class="overflow-y-scroll bg-light border-2 rounded-2" style="max-height: 95%">
                 <br>
                 {% for message in messages %}
-                {#                        {% if message.commissions ==  %}#}
-                {% if app.user.id ==  message.user.id %}
-                <div class="row justify-content-end" style="width: 99%">
-                    <div class="col-6 text-break justify-content-end border border-secondary-subtle border-2 rounded-5 bg-body-secondary">
-                        <div>
-                            {% if is_granted('ROLE_USER') %}
-                                <span class="badge rounded-pill text-bg-primary">Utilisateur</span>
-                            {% endif %}
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <span class="badge rounded-pill text-bg-danger">Admin</span>
-                            {% endif %}
-                            <b>{{ message.user.nom }} {{ message.user.prenom }}:</b>
+                    {#                        {% if message.commissions ==  %}#}
+                    {% if app.user.id ==  message.user.id %}
+                        <div class="row justify-content-end" style="width: 99%">
+                            <div class="col-8 text-break justify-content-end border border-secondary-subtle border-2 rounded-5 bg-body-secondary">
+                                <div>
+                                    {% if is_granted('ROLE_USER') %}
+                                        <span class="badge rounded-pill text-bg-primary">Utilisateur</span>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <span class="badge rounded-pill text-bg-danger">Admin</span>
+                                    {% endif %}
+                                    <b>{{ message.user.nom }} {{ message.user.prenom }}:</b>
+                                </div>
+                                <div>
+                                    {{ message.contenu }}
+                                </div>
+                                <div class="text-end">
+                                    <i>{{ message.dateEnvoi|date('d/m/Y H:i:s') }}</i>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            {{ message.contenu }}
+                    {% else %}
+                        <div class="row ms-2" style="width: 99%">
+                            <div class="col-8 text-break border border-secondary-subtle border-2 rounded-5 bg-body-secondary">
+                                <div>
+                                    {% if is_granted('ROLE_USER') %}
+                                        <span class="badge rounded-pill text-bg-primary">Utilisateur</span>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <span class="badge rounded-pill text-bg-danger">Admin</span>
+                                    {% endif %}
+                                    <b>{{ message.user.nom }} {{ message.user.prenom }}:</b>
+                                </div>
+                                <div>
+                                    {{ message.contenu }}
+                                </div>
+                                <div class="text-end">
+                                    <i>{{ message.dateEnvoi|date('d/m/Y H:i:s') }}</i>
+                                </div>
+                            </div>
                         </div>
-                        <div class="text-end">
-                            <i>{{ message.dateEnvoi|date('d/m/Y H:i:s') }}</i>
-                        </div>
-                    </div>
-                    <hr class="opacity-0">
-                </div>
-            {% else %}
-                <div class="row" style="width: 99%">
-                    <div class="col-6 text-break border border-secondary-subtle border-2 rounded-5 bg-body-secondary">
-                        <div>
-                            {% if is_granted('ROLE_USER') %}
-                                <span class="badge rounded-pill text-bg-primary">Utilisateur</span>
-                            {% endif %}
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <span class="badge rounded-pill text-bg-danger">Admin</span>
-                            {% endif %}
-                            <b>{{ message.user.nom }} {{ message.user.prenom }}:</b>
-                        </div>
-                        <div>
-                            {{ message.contenu }}
-                        </div>
-                        <div class="text-end">
-                            <i>{{ message.dateEnvoi|date('d/m/Y H:i:s') }}</i>
-                        </div>
-                    </div>
-                    <hr class="opacity-0">
                     {% endif %}
-                    {% endfor %}
+                    <hr class="opacity-0">
+                {% endfor %}
 
-                </div>
                 <form method="post">
                     <div class="fixed-bottom input-group p-2">
                         <!-- TODO mettre le input hidden des commissions -->
@@ -194,4 +196,8 @@
             </div>
         </div>
     </div>
-{% endblock %}
+</div>
+    {% endblock %}
+
+
+
