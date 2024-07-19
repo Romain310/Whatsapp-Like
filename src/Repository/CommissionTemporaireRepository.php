@@ -16,20 +16,30 @@ class CommissionTemporaireRepository extends ServiceEntityRepository
         parent::__construct($registry, CommissionTemporaire::class);
     }
 
-    //    /**
-    //     * @return CommissionTemporaire[] Returns an array of CommissionTemporaire objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('c.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * @return CommissionTemporaire[] Returns an array of CommissionTemporaire objects
+     */
+    public function findNonClos($value): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.cloture >= :val')
+            ->setParameter('val', $value)
+            ->orderBy('c.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findClos($value): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.cloture < :val')
+            ->setParameter('val', $value)
+            ->orderBy('c.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 
     //    public function findOneBySomeField($value): ?CommissionTemporaire
     //    {

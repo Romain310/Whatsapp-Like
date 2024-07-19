@@ -24,6 +24,9 @@ class Commission
     #[ORM\ManyToMany(targetEntity: Message::class, mappedBy: 'commissions')]
     private Collection $messages;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $icone = null;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
@@ -69,6 +72,18 @@ class Commission
         if ($this->messages->removeElement($message)) {
             $message->removeCommission($this);
         }
+
+        return $this;
+    }
+
+    public function getIcone(): ?string
+    {
+        return $this->icone;
+    }
+
+    public function setIcone(?string $icone): static
+    {
+        $this->icone = $icone;
 
         return $this;
     }
