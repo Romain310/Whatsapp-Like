@@ -27,9 +27,16 @@ class Commission
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $icone = null;
 
+    /**
+     * @var Collection<int, NotificationCommission>
+     */
+    #[ORM\OneToMany(targetEntity: NotificationCommission::class, mappedBy: 'commission', orphanRemoval: true)]
+    private Collection $notificationsUsers;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
+        $this->notificationsUsers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -84,6 +91,36 @@ class Commission
     public function setIcone(?string $icone): static
     {
         $this->icone = $icone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, NotificationCommission>
+     */
+    public function getNotificationsUsers(): Collection
+    {
+        return $this->notificationsUsers;
+    }
+
+    public function addNotificationsUser(NotificationCommission $notificationsUser): static
+    {
+        if (!$this->notificationsUsers->contains($notificationsUser)) {
+            $this->notificationsUsers->add($notificationsUser);
+            $notificationsUser->setCommission($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotificationsUser(NotificationCommission $notificationsUser): static
+    {
+        if ($this->notificationsUsers->removeElement($notificationsUser)) {
+            // set the owning side to null (unless already changed)
+            if ($notificationsUser->getCommission() === $this) {
+                $notificationsUser->setCommission(null);
+            }
+        }
 
         return $this;
     }
