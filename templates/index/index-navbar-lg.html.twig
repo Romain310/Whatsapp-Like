@@ -1,0 +1,39 @@
+{# templates/index-navbar-lg.html.twig #}
+
+{# Affichage de la navbar lg #}
+
+<nav class="navbar navbar-expand-lg ">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">WhatsApp-Like 📞</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {% if is_granted('ROLE_USER') %} {#TODO : Changer en ROLE Admin#}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administration</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Créer commission</a></li>
+                            <li><a class="dropdown-item" href="#">Modifier commission</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ path('admin') }}">Pannel d'administration</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+                {% if is_granted('ROLE_USER') %} {#TODO : Changer en ROLE Utilisateur privilégié#}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Utilisateur privilégié</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Créer commission</a></li>
+                            <li><a class="dropdown-item" href="#">Modifier commission</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+            <form class="d-flex" action="{{ path('app_logout') }}" method="post">
+                <button type="submit" class="btn btn-danger ">Se déconnecter</button>
+            </form>
+        </div>
+    </div>
+</nav>

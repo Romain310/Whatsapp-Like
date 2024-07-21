@@ -1,0 +1,22 @@
+{# templates/index-envoi-messages.html.twig #}
+
+{# Formulaire envoi de messages #}
+
+<form action="/sendMessage" method="post">
+    <input type="hidden" name="user" value="{{ app.user.id }}">
+    {% if commissionSelected|default(null) %}
+        <input type="hidden" name="commission" value="{{ commissionSelected.id }}">
+    {% endif %}
+    {% if commissionTemporaireSelected|default(null) %}
+        <input type="hidden" name="commissionTemporaire" value="{{ commissionTemporaireSelected.id }}">
+    {% endif %}
+    <input type="hidden">
+    <div class="fixed-bottom p-2">
+        <div class="input-group">
+            <input name="message" type="text" class="form-control" placeholder="Message" aria-label="Message" aria-describedby="basic-addon2">
+            <div class="input-group-append align-content-center">
+                <input class="btn btn-success bg-gradient" value="Envoyer" type="submit">
+            </div>
+        </div>
+    </div>
+</form>

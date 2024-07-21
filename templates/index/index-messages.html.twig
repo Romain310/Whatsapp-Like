@@ -1,0 +1,73 @@
+{# templates/index-messages.html.twig #}
+
+{# Affichage des messages #}
+
+<br>
+
+{# Verification si il existe des messages #}
+
+{% if messages|length == 0 %}
+    <div class="text-center fs-1">
+        <b>Aucun message disponible</b>
+    </div>
+{% else %}
+
+    {# Si auteur du message est soi-même #}
+
+    {% for message in messages %}
+
+        {% if app.user.id ==  message.user.id %}
+
+            {# Si auteur du message est soi-même #}
+
+            <div class="row justify-content-end" style="width: 99%">
+                <div class="col-8 text-break justify-content-end border border-secondary-subtle border-2 rounded-5 bg-body-secondary">
+                    <div>
+                        {% if 'ROLE_USER' in message.user.roles %}
+                            <span class="badge rounded-pill text-bg-primary">Utilisateur</span>
+                        {% endif %}
+                        {% if 'ROLE_ADMIN' in message.user.roles %}
+                            <span class="badge rounded-pill text-bg-danger">Admin</span>
+                        {% endif %}
+                        <b>{{ message.user.nom }} {{ message.user.prenom }}:</b>
+                    </div>
+                    <div>
+                        {{ message.contenu }}
+                    </div>
+                    <div class="text-end">
+                        <i>{{ message.dateEnvoi|date('d/m/Y H:i:s') }}</i>
+                    </div>
+                </div>
+            </div>
+
+        {% else %}
+
+            {# Si auteur du message est quelqu'un d'autre #}
+
+            <div class="row ms-2" style="width: 99%">
+                <div class="col-8 text-break border border-secondary-subtle border-2 rounded-5 bg-body-secondary">
+                    <div>
+                        {% if 'ROLE_USER' in message.user.roles %}
+                            <span class="badge rounded-pill text-bg-primary">Utilisateur</span>
+                        {% endif %}
+                        {% if 'ROLE_ADMIN' in message.user.roles %}
+                            <span class="badge rounded-pill text-bg-danger">Admin</span>
+                        {% endif %}
+                        <b>{{ message.user.nom }} {{ message.user.prenom }}:</b>
+                    </div>
+                    <div>
+                        {{ message.contenu }}
+                    </div>
+                    <div class="text-end">
+                        <i>{{ message.dateEnvoi|date('d/m/Y H:i:s') }}</i>
+                    </div>
+                </div>
+            </div>
+
+        {% endif %}
+
+        <hr class="opacity-0">
+
+    {% endfor %}
+
+{% endif %}

@@ -1,0 +1,99 @@
+{# templates/index-card.html.twig #}
+
+{# Contenu card page index #}
+
+{# Commission #}
+
+<div class="card">
+    <div class="card-header">
+        <b>Commissions</b>
+    </div>
+    <div class="overflow-y-auto" style="height: calc(5 * 2.55rem);">       {# 1 ligne = 2.55rem #}
+        <ul class="list-group list-group-flush">
+            {% for commission in commissions %}
+                {% if commission.libelle in app.request.pathInfo  %}
+                    <li class="list-group-item active">{{ commission.libelle }} {{ commission.icone }}</li>
+                {% else %}
+                    <li class="list-group-item">
+                        <a href="/commission/{{ commission.libelle }}">{{ commission.libelle }}</a> {{ commission.icone }}
+                        <!-- Affichage du nombre de message non lu -->
+                        {% if commission.id in messageNonLuCommission|keys %}
+                            <span class="badge text-bg-secondary">{{ messageNonLuCommission[commission.id] }}</span>
+                        {% endif %}
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if commissions|length == 0 %}
+                <li class="list-group-item"><b>Aucune commission trouvée</b></li>
+            {% endif %}
+        </ul>
+    </div>
+
+</div>
+
+<hr class="opacity-0">
+
+{# Commission temporaire #}
+
+<div class="card">
+    <div class="card-header">
+        <b>Commissions Temporaires</b>
+    </div>
+    <div class="overflow-y-auto" style="height: calc(5 * 2.55rem);">       {# 1 ligne = 2.55rem #}
+        <ul class="list-group list-group-flush">
+            {% if commissionsTemporaireNonClos|length == 0 %}
+                <li class="list-group-item"><b>Aucune commission disponible</b></li>
+            {% else %}
+                {% for commissionTemporaire in commissionsTemporaireNonClos %}
+                    {% if "/commission-temporaire/" ~ commissionTemporaire.id == app.request.pathInfo %}
+                        <li class="list-group-item active">{{ commissionTemporaire.libelle }}</li>
+                    {% else %}
+                        <li class="list-group-item">
+                            <a href="/commission-temporaire/{{ commissionTemporaire.id }}">{{ commissionTemporaire.libelle }}</a>
+                            <!-- Affichage du nombre de message non lu -->
+                            {% if commissionTemporaire.id in messageNonLuCommissionTemporaire|keys %}
+                                <span class="badge text-bg-secondary">{{ messageNonLuCommissionTemporaire[commissionTemporaire.id] }}</span>
+                            {% endif %}
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </ul>
+    </div>
+
+</div>
+
+<hr class="opacity-0">
+
+{# Commission temporaire clos #}
+
+{% if is_granted('ROLE_USER') %} {#TODO : Changer en ROLE Admin#}
+
+    <div class="card">
+        <div class="card-header">
+            <b>Commissions Temporaires 🔐</b>
+        </div>
+        <div class="overflow-y-auto" style="height: calc(5 * 2.55rem);">       {# 1 ligne = 2.55rem #}
+            <ul class="list-group list-group-flush">
+                {% if commissionsTemporaireClos|length == 0 %}
+                    <li class="list-group-item"><b>Aucune commission disponible</b></li>
+                {% else %}
+                    {% for commissionTemporaire in commissionsTemporaireClos %}
+                        {% if "/commission-clos/" ~ commissionTemporaire.id == app.request.pathInfo %}
+                            <li class="list-group-item active">{{ commissionTemporaire.libelle }}</li>
+                        {% else %}
+                            <li class="list-group-item">
+                                <a href="/commission-clos/{{ commissionTemporaire.id }}">{{ commissionTemporaire.libelle }}</a>
+                                <!-- Affichage du nombre de message non lu -->
+                                {% if commissionTemporaire.id in messageNonLuCommissionTemporaire|keys %}
+                                    <span class="badge text-bg-secondary">{{ messageNonLuCommissionTemporaire[commissionTemporaire.id] }}</span>
+                                {% endif %}
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+
+{% endif %}

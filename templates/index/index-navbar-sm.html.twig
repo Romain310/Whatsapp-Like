@@ -1,0 +1,26 @@
+{# templates/index-navbar-lg.html.twig #}
+
+{# Affichage de la navbar sm #}
+
+<nav class="navbar">
+    <div class="container-fluid">
+        <div class="d-lg-none">
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvaContent" aria-controls="offcanvaContent" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div>
+            <a class="navbar-brand" href="#"><b>WhatsApp-Like 📞</b></a>
+        </div>
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvaContent" aria-labelledby="offcanvaContentLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvaContentLabel">WhatsApp-Like 📞</h5>
+                <button type="button" class="btn-close btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                {% include 'index/index-card.html.twig' %}
+                {% include 'index/index-card-admin.html.twig' %}
+            </div>
+        </div>
+    </div>
+</nav>

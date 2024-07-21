@@ -3,280 +3,42 @@
 {% block title %}Messagerie{% endblock %}
 
 {% block body %}
+
     <div class="container-fluid">
+
         <div class="row">
-            <div class="d-none d-lg-block col-lg-3">
-                <h3 class="text-center">Groupes de discussions</h3>
-            </div>
-            <div class="col-lg-9 col-sm-12">
-                <nav class="navbar">
-                    <div class="container-fluid">
-                        <div class="d-lg-none">
-                            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvaContent" aria-controls="offcanvaContent" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                        </div>
-                        <div>
-                            <a class="navbar-brand" href="#"><b>WhatsApp-Like</b></a>
-                        </div>
-                        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvaContent" aria-labelledby="offcanvaContentLabel">
-                            <div class="offcanvas-header">
-                                <h5 class="offcanvas-title" id="offcanvaContentLabel">WhatsApp-Like ​📞​</h5>
-                                <button type="button" class="btn-close btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                            </div>
-                            <div class="offcanvas-body">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <b>Commissions</b>
-                                    </div>
-                                    <ul class="list-group list-group-flush">
-                                        {% for commission in commissions %}
-                                            {% if commission.libelle in app.request.pathInfo  %}
-                                                <li class="list-group-item active">{{ commission.libelle }} {{ commission.icone }}</li>
-                                            {% else %}
-                                                <li class="list-group-item">
-                                                    <a href="/commission/{{ commission.libelle }}">{{ commission.libelle }}</a> {{ commission.icone }}
-                                                    <!-- Affichage du nombre de message non lu -->
-                                                    {% if commission.id in messageNonLuCommission|keys %}
-                                                        <span class="badge text-bg-secondary">{{ messageNonLuCommission[commission.id] }}</span>
-                                                    {% endif %}
-                                                </li>
-                                            {% endif %}
-                                        {% endfor %}
-                                        {% if commissions|length == 0 %}
-                                            <li class="list-group-item"><b>Aucune commission trouvée</b></li>
-                                        {% endif %}
-                                    </ul>
-                                </div>
-                                <hr>
-                                <div class="card">
-                                    <div class="card-header">
-                                        <b>Commissions Temporaires</b>
-                                    </div>
-                                    <ul class="list-group list-group-flush">
-                                        {% if commissionsTemporaireNonClos|length == 0 %}
-                                            <li class="list-group-item"><b>Aucune commission disponible</b></li>
-                                        {% else %}
-                                            {% for commissionTemporaire in commissionsTemporaireNonClos %}
-                                                {% if "/commission-temporaire/" ~ commissionTemporaire.id == app.request.pathInfo %}
-                                                    <li class="list-group-item active">{{ commissionTemporaire.libelle }}</li>
-                                                {% else %}
-                                                    <li class="list-group-item">
-                                                        <a href="/commission-temporaire/{{ commissionTemporaire.id }}">{{ commissionTemporaire.libelle }}</a>
-                                                        <!-- Affichage du nombre de message non lu -->
-                                                        {% if commissionTemporaire.id in messageNonLuCommissionTemporaire|keys %}
-                                                            <span class="badge text-bg-secondary">{{ messageNonLuCommissionTemporaire[commissionTemporaire.id] }}</span>
-                                                        {% endif %}
-                                                    </li>
-                                                {% endif %}
-                                            {% endfor %}
-                                        {% endif %}
-                                    </ul>
-                                </div>
-                                {% if is_granted('ROLE_USER') %} {# TODO A changer en ROLE_ADMIN plus tard #}
-                                    <hr>
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <b>Commissions Temporaires 🔐​</b>
-                                        </div>
-                                        <ul class="list-group list-group-flush">
-                                            {% if commissionsTemporaireClos|length == 0 %}
-                                                <li class="list-group-item"><b>Aucune commission disponible</b></li>
-                                            {% else %}
-                                                {% for commissionTemporaire in commissionsTemporaireClos %}
-                                                    {% if "/commission-clos/" ~ commissionTemporaire.id == app.request.pathInfo %}
-                                                        <li class="list-group-item active">{{ commissionTemporaire.libelle }}</li>
-                                                    {% else %}
-                                                        <li class="list-group-item">
-                                                            <a href="/commission-clos/{{ commissionTemporaire.id }}">{{ commissionTemporaire.libelle }}</a>
-                                                            <!-- Affichage du nombre de message non lu -->
-                                                            {% if commissionTemporaire.id in messageNonLuCommissionTemporaire|keys %}
-                                                                <span class="badge text-bg-secondary">{{ messageNonLuCommissionTemporaire[commissionTemporaire.id] }}</span>
-                                                            {% endif %}
-                                                        </li>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            {% endif %}
-                                        </ul>
-                                    </div>
-                                {% endif %}
-                                <hr>
-                                {% if is_granted('ROLE_USER') %} {# TODO A changer en ROLE_ADMIN plus tard #}
-                                    <a href="{{ path('admin') }}" class="btn btn-primary">Administration</a>
-                                    <hr>
-                                {% endif %}
-                                <form action="{{ path('app_logout') }}" method="post">
-                                    <button type="submit" class="btn btn-danger">Se déconnecter</button>
-                                </form>
 
-                            </div>
-                        </div>
-                    </div>
-                </nav>
+            <div class="d-none d-lg-block">
+                {% include 'index/index-navbar-lg.html.twig' %}
             </div>
+            <div class="d-block d-lg-none">
+                {% include 'index/index-navbar-sm.html.twig' %}
+            </div>
+
         </div>
+
         <div class="row" style="height: 89vh; overflow: unset;">
-            <div class="d-none d-lg-block col-lg-3" style="height: 100%">
-                <div class="overflow-y-scroll" style="max-height: 95%">
-                    <div class="card">
-                        <div class="card-header">
-                            <b>Commissions</b>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            {% for commission in commissions %}
-                                {% if commission.libelle in app.request.pathInfo  %}
-                                    <li class="list-group-item active">{{ commission.libelle }} {{ commission.icone }}</li>
-                                {% else %}
-                                    <li class="list-group-item text-black">
-                                        <a href="/commission/{{ commission.libelle }}">{{ commission.libelle }}</a> {{ commission.icone }}
-                                        <!-- Affichage du nombre de message non lu -->
-                                        {% if commission.id in messageNonLuCommission|keys %}
-                                            <span class="badge text-bg-secondary">{{ messageNonLuCommission[commission.id] }}</span>
-                                        {% endif %}
-                                    </li>
-                                {% endif %}
-                            {% endfor %}
-                            {% if commissions|length == 0 %}
-                                <li class="list-group-item"><b>Aucune commission trouvée</b></li>
-                            {% endif %}
-                        </ul>
-                    </div>
-                    <hr>
-                    <div class="card">
-                        <div class="card-header">
-                            <b>Commissions Temporaires</b>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            {% if commissionsTemporaireNonClos|length == 0 %}
-                                <li class="list-group-item"><b>Aucune commission disponible</b></li>
-                            {% else %}
-                                {% for commissionTemporaire in commissionsTemporaireNonClos %}
-                                    {% if "/commission-temporaire/" ~ commissionTemporaire.id == app.request.pathInfo %}
-                                        <li class="list-group-item active">{{ commissionTemporaire.libelle }}</li>
-                                    {% else %}
-                                        <li class="list-group-item">
-                                            <a href="/commission-temporaire/{{ commissionTemporaire.id }}">{{ commissionTemporaire.libelle }}</a>
-                                            <!-- Affichage du nombre de message non lu -->
-                                            {% if commissionTemporaire.id in messageNonLuCommissionTemporaire|keys %}
-                                                <span class="badge text-bg-secondary">{{ messageNonLuCommissionTemporaire[commissionTemporaire.id] }}</span>
-                                            {% endif %}
-                                        </li>
-                                    {% endif %}
-                                {% endfor %}
-                            {% endif %}
-                        </ul>
-                    </div>
-                    {% if is_granted('ROLE_USER') %} {# TODO A changer en ROLE_ADMIN plus tard #}
-                        <hr>
-                        <div class="card">
-                            <div class="card-header">
-                                <b>Commissions Temporaires 🔐​</b>
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                {% if commissionsTemporaireClos|length == 0 %}
-                                    <li class="list-group-item"><b>Aucune commission disponible</b></li>
-                                {% else %}
-                                    {% for commissionTemporaire in commissionsTemporaireClos %}
-                                        {% if "/commission-clos/" ~ commissionTemporaire.id == app.request.pathInfo %}
-                                            <li class="list-group-item active">{{ commissionTemporaire.libelle }}</li>
-                                        {% else %}
-                                            <li class="list-group-item">
-                                                <a href="/commission-clos/{{ commissionTemporaire.id }}">{{ commissionTemporaire.libelle }}</a>
-                                                <!-- Affichage du nombre de message non lu -->
-                                                {% if commissionTemporaire.id in messageNonLuCommissionTemporaire|keys %}
-                                                    <span class="badge text-bg-secondary">{{ messageNonLuCommissionTemporaire[commissionTemporaire.id] }}</span>
-                                                {% endif %}
-                                            </li>
-                                        {% endif %}
-                                    {% endfor %}
-                                {% endif %}
-                            </ul>
-                        </div>
-                    {% endif %}
-                    <hr>
-                    {% if is_granted('ROLE_USER') %} {# TODO A changer en ROLE_ADMIN plus tard #}
-                        <a href="{{ path('admin') }}" class="btn btn-primary">Administration</a>
-                        <hr>
-                    {% endif %}
-                    <form action="{{ path('app_logout') }}" method="post">
-                        <button type="submit" class="btn btn-danger">Se déconnecter</button>
-                    </form>
-                </div>
 
-            </div>
-            <div class="col-12 col-lg-9 " style="height: 100%">
-                <div class="overflow-y-scroll bg-light border-2 rounded-2" style="height: 95%">
-                    <br>
-                    {% if messages|length == 0 %}
-                        <div class="text-center">
-                            <b>Aucun message disponible</b>
-                        </div>
-                    {% else %}
-                        {% for message in messages %}
-                            {% if app.user.id ==  message.user.id %}
-                                <div class="row justify-content-end" style="width: 99%">
-                                    <div class="col-8 text-break justify-content-end border border-secondary-subtle border-2 rounded-5 bg-body-secondary">
-                                        <div>
-                                            {% if is_granted('ROLE_USER') %}
-                                                <span class="badge rounded-pill text-bg-primary">Utilisateur</span>
-                                            {% endif %}
-                                            {% if is_granted('ROLE_ADMIN') %}
-                                                <span class="badge rounded-pill text-bg-danger">Admin</span>
-                                            {% endif %}
-                                            <b>{{ message.user.nom }} {{ message.user.prenom }}:</b>
-                                        </div>
-                                        <div>
-                                            {{ message.contenu }}
-                                        </div>
-                                        <div class="text-end">
-                                            <i>{{ message.dateEnvoi|date('d/m/Y H:i:s') }}</i>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% else %}
-                                <div class="row ms-2" style="width: 99%">
-                                    <div class="col-8 text-break border border-secondary-subtle border-2 rounded-5 bg-body-secondary">
-                                        <div>
-                                            {% if is_granted('ROLE_USER') %}
-                                                <span class="badge rounded-pill text-bg-primary">Utilisateur</span>
-                                            {% endif %}
-                                            {% if is_granted('ROLE_ADMIN') %}
-                                                <span class="badge rounded-pill text-bg-danger">Admin</span>
-                                            {% endif %}
-                                            <b>{{ message.user.nom }} {{ message.user.prenom }}:</b>
-                                        </div>
-                                        <div>
-                                            {{ message.contenu }}
-                                        </div>
-                                        <div class="text-end">
-                                            <i>{{ message.dateEnvoi|date('d/m/Y H:i:s') }}</i>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endif %}
-                            <hr class="opacity-0">
-                        {% endfor %}
-                    {% endif %}
-                    <form action="/sendMessage" method="post">
-                        <input type="hidden" name="user" value="{{ app.user.id }}">
-                        {% if commissionSelected|default(null) %}
-                            <input type="hidden" name="commission" value="{{ commissionSelected.id }}">
-                        {% endif %}
-                        {% if commissionTemporaireSelected|default(null) %}
-                            <input type="hidden" name="commissionTemporaire" value="{{ commissionTemporaireSelected.id }}">
-                        {% endif %}
-                        <input type="hidden">
-                        <div class="fixed-bottom p-2">
-                            <div class="input-group">
-                                <input name="message" type="text" class="form-control" placeholder="Message" aria-label="Message" aria-describedby="basic-addon2">
-                                <div class="input-group-append align-content-center">
-                                    <input class="btn btn-success bg-gradient" value="Envoyer" type="submit">
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+            <div class="d-none d-lg-block col-lg-3" style="height: 100%">
+                <div class="overflow-y-auto" style="max-height: 95%">
+                    {% include 'index/index-card.html.twig' %}
+                    <div class="d-lg-none">
+                        <hr>
+                        {% include 'index/index-navbar-sm.html.twig' %}
+                    </div>
+                    <hr class="opacity-0">
                 </div>
             </div>
+
+            <div class="col-12 col-lg-9 " style="height: 100%">
+                <div class="overflow-y-auto bg-light border-2 rounded-2" style="height: 95%">
+                    {% include 'index/index-messages.html.twig' %}
+                    {% include 'index/index-envoi-messages.html.twig' %}
+                </div>
+            </div>
+
         </div>
+
     </div>
+
 {% endblock %}
