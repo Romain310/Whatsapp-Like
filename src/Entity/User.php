@@ -47,9 +47,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $messages;
 
+    /**
+     * @var Collection<int, NotificationCommission>
+     */
+    #[ORM\OneToMany(targetEntity: NotificationCommission::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $notificationsCommissions;
+
+    /**
+     * @var Collection<int, NotificationCommissionTemporaire>
+     */
+    #[ORM\OneToMany(targetEntity: NotificationCommissionTemporaire::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $notificationsCommissionsTemporaires;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
+        $this->notificationsCommissions = new ArrayCollection();
+        $this->notificationsCommissionsTemporaires = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -171,6 +185,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($message->getUser() === $this) {
                 $message->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, NotificationCommission>
+     */
+    public function getNotificationsCommissions(): Collection
+    {
+        return $this->notificationsCommissions;
+    }
+
+    public function addNotificationsCommission(NotificationCommission $notificationsCommission): static
+    {
+        if (!$this->notificationsCommissions->contains($notificationsCommission)) {
+            $this->notificationsCommissions->add($notificationsCommission);
+            $notificationsCommission->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotificationsCommission(NotificationCommission $notificationsCommission): static
+    {
+        if ($this->notificationsCommissions->removeElement($notificationsCommission)) {
+            // set the owning side to null (unless already changed)
+            if ($notificationsCommission->getUser() === $this) {
+                $notificationsCommission->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, NotificationCommissionTemporaire>
+     */
+    public function getNotificationsCommissionsTemporaires(): Collection
+    {
+        return $this->notificationsCommissionsTemporaires;
+    }
+
+    public function addNotificationsCommissionsTemporaire(NotificationCommissionTemporaire $notificationsCommissionsTemporaire): static
+    {
+        if (!$this->notificationsCommissionsTemporaires->contains($notificationsCommissionsTemporaire)) {
+            $this->notificationsCommissionsTemporaires->add($notificationsCommissionsTemporaire);
+            $notificationsCommissionsTemporaire->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotificationsCommissionsTemporaire(NotificationCommissionTemporaire $notificationsCommissionsTemporaire): static
+    {
+        if ($this->notificationsCommissionsTemporaires->removeElement($notificationsCommissionsTemporaire)) {
+            // set the owning side to null (unless already changed)
+            if ($notificationsCommissionsTemporaire->getUser() === $this) {
+                $notificationsCommissionsTemporaire->setUser(null);
             }
         }
 
