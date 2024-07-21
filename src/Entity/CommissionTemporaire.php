@@ -31,9 +31,16 @@ class CommissionTemporaire
     #[ORM\ManyToMany(targetEntity: Message::class, mappedBy: 'commissionsTemporaires')]
     private Collection $messages;
 
+    /**
+     * @var Collection<int, NotificationCommissionTemporaire>
+     */
+    #[ORM\OneToMany(targetEntity: NotificationCommissionTemporaire::class, mappedBy: 'commissionTemporaire', orphanRemoval: true)]
+    private Collection $notificationsUsers;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
+        $this->notificationsUsers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -99,6 +106,36 @@ class CommissionTemporaire
     {
         if ($this->messages->removeElement($message)) {
             $message->removeCommissionsTemporaire($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, NotificationCommissionTemporaire>
+     */
+    public function getNotificationsUsers(): Collection
+    {
+        return $this->notificationsUsers;
+    }
+
+    public function addNotificationsUser(NotificationCommissionTemporaire $notificationsUser): static
+    {
+        if (!$this->notificationsUsers->contains($notificationsUser)) {
+            $this->notificationsUsers->add($notificationsUser);
+            $notificationsUser->setCommissionTemporaire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotificationsUser(NotificationCommissionTemporaire $notificationsUser): static
+    {
+        if ($this->notificationsUsers->removeElement($notificationsUser)) {
+            // set the owning side to null (unless already changed)
+            if ($notificationsUser->getCommissionTemporaire() === $this) {
+                $notificationsUser->setCommissionTemporaire(null);
+            }
         }
 
         return $this;
