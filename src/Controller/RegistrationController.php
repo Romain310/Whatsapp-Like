@@ -37,7 +37,7 @@ class RegistrationController extends AbstractController
                 $user->addNotificationsCommission($notificationsCommissions);
             }
             // On active les notifs pour toutes les commissions temporaires
-            foreach ($entityManager->getRepository(CommissionTemporaire::class)->findAll() as $commissionTemporaire) {
+            foreach ($entityManager->getRepository(CommissionTemporaire::class)->findNonClos(new \DateTime("now")) as $commissionTemporaire) {
                 $notificationsCommissionsTemporaires = new NotificationCommissionTemporaire();
                 $notificationsCommissionsTemporaires->setCommissionTemporaire($commissionTemporaire);
                 $notificationsCommissionsTemporaires->setUser($user);
