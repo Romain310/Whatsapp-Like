@@ -5,15 +5,15 @@ namespace App\Controller;
 use App\Entity\Commission;
 use App\Entity\CommissionTemporaire;
 use App\Entity\Message;
+use App\Entity\MessageLu;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Exception\ORMException;
-use Doctrine\ORM\OptimisticLockException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class HomeController extends AbstractController
 {
@@ -26,9 +26,40 @@ class HomeController extends AbstractController
         $commissions = $entityManager->getRepository(Commission::class)->findAll();
         $commissionsTemporaireNonClos = $entityManager->getRepository(CommissionTemporaire::class)->findNonClos($dateActuelle);
         $commissionsTemporaireClos = $entityManager->getRepository(CommissionTemporaire::class)->findClos($dateActuelle);
-
         //Recupère objet commission général (ID 1)
         $commissionGeneral = $entityManager->getRepository(Commission::class)->find(1);
+
+        $messagesNonLu = $entityManager->getRepository(MessageLu::class)->findBy(['user' =>  $this->getUser()->getId(), 'lu' => false]);
+
+        // On compte les messages non lu par commissions
+        $mapNonLuByCommission = array();
+        $mapNonLuByCommissionTemporaire = array();
+        foreach ($messagesNonLu as $messageNonLu) {
+            // Pour chaque message non lu par commission
+            foreach ($messageNonLu->getMessage()->getCommissions() as $commission) {
+                if ($commission == $commissionGeneral) {
+                    // On efface les notifications pour cette commission
+                    $messageNonLu->setLu(true);
+                    $entityManager->persist($messageNonLu);
+                    $entityManager->flush();
+                } else {
+                    if (!array_key_exists($commission->getId(), $mapNonLuByCommission)) {
+                        $mapNonLuByCommission[$commission->getId()] = 0;
+                    }
+                    // On incremente le nombre de message
+                    $mapNonLuByCommission[$commission->getId()] = $mapNonLuByCommission[$commission->getId()]+1;
+                }
+            }
+
+            // Pour chaque message non lu par commission temporaire
+            foreach ($messageNonLu->getMessage()->getCommissionsTemporaires() as $commissionTemporaire) {
+                if (!array_key_exists($commissionTemporaire->getId(), $mapNonLuByCommissionTemporaire)) {
+                    $mapNonLuByCommissionTemporaire[$commissionTemporaire->getId()] = 0;
+                }
+                // On incremente le nombre de message
+                $mapNonLuByCommissionTemporaire[$commissionTemporaire->getId()] = $mapNonLuByCommissionTemporaire[$commissionTemporaire->getId()]+1;
+            }
+        }
 
         //Initialise les paramètres envoyé à la vue
         $params = [
@@ -37,7 +68,9 @@ class HomeController extends AbstractController
             "commissionsTemporaireNonClos" => $commissionsTemporaireNonClos,
             "commissionsTemporaireClos" => $commissionsTemporaireClos,
             "dateActuelle" => $dateActuelle,
-            "commissionSelected" => $commissionGeneral
+            "commissionSelected" => $commissionGeneral,
+            "messageNonLuCommission" => $mapNonLuByCommission,
+            "messageNonLuCommissionTemporaire" => $mapNonLuByCommissionTemporaire,
         ];
 
         //Affiche la vue
@@ -54,18 +87,52 @@ class HomeController extends AbstractController
         $commissionsTemporaireNonClos = $entityManager->getRepository(CommissionTemporaire::class)->findNonClos($dateActuelle);
         $commissionsTemporaireClos = $entityManager->getRepository(CommissionTemporaire::class)->findClos($dateActuelle);
 
-        //Recupère le commission en fonction de son libelle
-        $commission = $entityManager->getRepository(Commission::class)->findOneBy(array('libelle' => $libelleCommission));
+        $messagesNonLu = $entityManager->getRepository(MessageLu::class)->findBy(['user' =>  $this->getUser()->getId(), 'lu' => false]);
 
-        if ($commission) {
+        //Recupère le commission en fonction de son libelle
+        $commissionSelected = $entityManager->getRepository(Commission::class)->findOneBy(array('libelle' => $libelleCommission));
+
+        // On compte les messages non lu par commissions
+        $mapNonLuByCommission = array();
+        $mapNonLuByCommissionTemporaire = array();
+        foreach ($messagesNonLu as $messageNonLu) {
+            // Pour chaque message non lu par commission
+            foreach ($messageNonLu->getMessage()->getCommissions() as $commission) {
+                if ($commission == $commissionSelected) {
+                    // On efface les notifications pour cette commission
+                    $messageNonLu->setLu(true);
+                    $entityManager->persist($messageNonLu);
+                    $entityManager->flush();
+                } else {
+                    if (!array_key_exists($commission->getId(), $mapNonLuByCommission)) {
+                        $mapNonLuByCommission[$commission->getId()] = 0;
+                    }
+                    // On incremente le nombre de message
+                    $mapNonLuByCommission[$commission->getId()] = $mapNonLuByCommission[$commission->getId()]+1;
+                }
+            }
+
+            // Pour chaque message non lu par commission temporaire
+            foreach ($messageNonLu->getMessage()->getCommissionsTemporaires() as $commissionTemporaire) {
+                if (!array_key_exists($commissionTemporaire->getId(), $mapNonLuByCommissionTemporaire)) {
+                    $mapNonLuByCommissionTemporaire[$commissionTemporaire->getId()] = 0;
+                }
+                // On incremente le nombre de message
+                $mapNonLuByCommissionTemporaire[$commissionTemporaire->getId()] = $mapNonLuByCommissionTemporaire[$commissionTemporaire->getId()]+1;
+            }
+        }
+
+        if ($commissionSelected) {
             //Initialise les paramètres envoyé à la vue
             $params = [
-                "messages" => $commission->getMessages(),
+                "messages" => $commissionSelected->getMessages(),
                 "commissions" => $commissions,
                 "commissionsTemporaireNonClos" => $commissionsTemporaireNonClos,
                 "commissionsTemporaireClos" => $commissionsTemporaireClos,
                 "dateActuelle" => $dateActuelle,
-                "commissionSelected" => $commission
+                "commissionSelected" => $commissionSelected,
+                "messageNonLuCommission" => $mapNonLuByCommission,
+                "messageNonLuCommissionTemporaire" => $mapNonLuByCommissionTemporaire,
             ];
             //Affiche la vue
             return $this->render('index.html.twig', $params);
@@ -76,7 +143,7 @@ class HomeController extends AbstractController
     }
 
     #[Route('/commission-temporaire/{idCommissionTemporaire}', name: 'messageCommissionTemporaireNonClos')]
-    public function messageCommissionTemporaireNonClos(EntityManagerInterface $entityManager, string $idCommissionTemporaire): Response
+    public function messageCommissionTemporaireNonClos(EntityManagerInterface $entityManager, string $idCommissionTemporaire, UserInterface $user): Response
     {
         $dateActuelle = date('Y-m-d');
 
@@ -88,6 +155,38 @@ class HomeController extends AbstractController
         //Recupère le commission en fonction de son libelle
         $commissionSelected = $entityManager->getRepository(CommissionTemporaire::class)->find($idCommissionTemporaire);
 
+        $messagesNonLu = $entityManager->getRepository(MessageLu::class)->findBy(['user' =>  $this->getUser()->getId(), 'lu' => false]);
+
+        // On compte les messages non lu par commissions
+        $mapNonLuByCommission = array();
+        $mapNonLuByCommissionTemporaire = array();
+        foreach ($messagesNonLu as $messageNonLu) {
+            // Pour chaque message non lu par commission
+            foreach ($messageNonLu->getMessage()->getCommissions() as $commission) {
+                if (!array_key_exists($commission->getId(), $mapNonLuByCommission)) {
+                    $mapNonLuByCommission[$commission->getId()] = 0;
+                }
+                // On incremente le nombre de message
+                $mapNonLuByCommission[$commission->getId()] = $mapNonLuByCommission[$commission->getId()]+1;
+            }
+
+            // Pour chaque message non lu par commission temporaire
+            foreach ($messageNonLu->getMessage()->getCommissionsTemporaires() as $commissionTemporaire) {
+                if ($commissionTemporaire == $commissionSelected) {
+                    // On efface les notifications pour cette commission
+                    $messageNonLu->setLu(true);
+                    $entityManager->persist($messageNonLu);
+                    $entityManager->flush();
+                } else {
+                    if (!array_key_exists($commissionTemporaire->getId(), $mapNonLuByCommissionTemporaire)) {
+                        $mapNonLuByCommissionTemporaire[$commissionTemporaire->getId()] = 0;
+                    }
+                    // On incremente le nombre de message
+                    $mapNonLuByCommissionTemporaire[$commissionTemporaire->getId()] = $mapNonLuByCommissionTemporaire[$commissionTemporaire->getId()]+1;
+                }
+            }
+        }
+
         //Vérifie si la commission n'est pas cloturé
         if ($commissionSelected != null) {
             //Initialise les paramètres envoyé à la vue
@@ -97,7 +196,9 @@ class HomeController extends AbstractController
                 "commissionsTemporaireNonClos" => $commissionsTemporaireNonClos,
                 "commissionsTemporaireClos" => $commissionsTemporaireClos,
                 "dateActuelle" => $dateActuelle,
-                "commissionTemporaireSelected" => $commissionSelected
+                "commissionTemporaireSelected" => $commissionSelected,
+                "messageNonLuCommission" => $mapNonLuByCommission,
+                "messageNonLuCommissionTemporaire" => $mapNonLuByCommissionTemporaire,
             ];
             //Affiche la vue
             return $this->render('index.html.twig', $params);
@@ -119,6 +220,38 @@ class HomeController extends AbstractController
         //Recupère le commission en fonction de son libelle
         $commissionSelected = $entityManager->getRepository(CommissionTemporaire::class)->find($idCommissionTemporaire);
 
+        $messagesNonLu = $entityManager->getRepository(MessageLu::class)->findBy(['user' =>  $this->getUser()->getId(), 'lu' => false]);
+
+        // On compte les messages non lu par commissions
+        $mapNonLuByCommission = array();
+        $mapNonLuByCommissionTemporaire = array();
+        foreach ($messagesNonLu as $messageNonLu) {
+            // Pour chaque message non lu par commission
+            foreach ($messageNonLu->getMessage()->getCommissions() as $commission) {
+                if (!array_key_exists($commission->getId(), $mapNonLuByCommission)) {
+                    $mapNonLuByCommission[$commission->getId()] = 0;
+                }
+                // On incremente le nombre de message
+                $mapNonLuByCommission[$commission->getId()] = $mapNonLuByCommission[$commission->getId()]+1;
+            }
+
+            // Pour chaque message non lu par commission temporaire
+            foreach ($messageNonLu->getMessage()->getCommissionsTemporaires() as $commissionTemporaire) {
+                if ($commissionTemporaire == $commissionSelected) {
+                    // On efface les notifications pour cette commission
+                    $messageNonLu->setLu(true);
+                    $entityManager->persist($messageNonLu);
+                    $entityManager->flush();
+                } else {
+                    if (!array_key_exists($commissionTemporaire->getId(), $mapNonLuByCommissionTemporaire)) {
+                        $mapNonLuByCommissionTemporaire[$commissionTemporaire->getId()] = 0;
+                    }
+                    // On incremente le nombre de message
+                    $mapNonLuByCommissionTemporaire[$commissionTemporaire->getId()] = $mapNonLuByCommissionTemporaire[$commissionTemporaire->getId()]+1;
+                }
+            }
+        }
+
         //Vérifie si la commission est cloturé
         if ($commissionSelected != null) {
             //Initialise les paramètres envoyé à la vue
@@ -128,7 +261,9 @@ class HomeController extends AbstractController
                 "commissionsTemporaireNonClos" => $commissionsTemporaireNonClos,
                 "commissionsTemporaireClos" => $commissionsTemporaireClos,
                 "dateActuelle" => $dateActuelle,
-                "commissionTemporaireSelected" => $commissionSelected
+                "commissionTemporaireSelected" => $commissionSelected,
+                "messageNonLuCommission" => $mapNonLuByCommission,
+                "messageNonLuCommissionTemporaire" => $mapNonLuByCommissionTemporaire,
             ];
             //Affiche la vue
             return $this->render('index.html.twig', $params);
@@ -159,6 +294,18 @@ class HomeController extends AbstractController
             $message->addCommissionsTemporaire($commissionTemporaire);
         }
 
+        // TODO Vérifier qu'il ne se notifie pas lui-même
+        foreach ($entityManager->getRepository(User::class)->findAll() as $user) {
+            if ($user != $this->getUser()) {
+                $messageNonLu = new MessageLu();
+                $messageNonLu->setUser($user);
+                $messageNonLu->setMessage($message);
+                // On indique que tous les autres users n'ont pas lu le message
+                $messageNonLu->setLu(false);
+                $message->addUserReader($messageNonLu);
+            }
+        }
+
         $entityManager->persist($message);
         $entityManager->flush();
         if (!$message->getCommissions()->isEmpty()) {
@@ -169,4 +316,21 @@ class HomeController extends AbstractController
             return $this->redirect('/');
         }
     }
+
+//    #[Route('/sendNotifications', name: 'sendNotifications')]
+//    public function sendNotifications(Request $request, NotifierInterface $notifier): Response
+//    {
+//        $notification = (new Notification('New Invoice', ['browser']))
+//            ->content('You got a new invoice for 15 EUR.');
+//
+//        // The receiver of the Notification
+//        $recipient = new Recipient(
+//            "valentin.simon@limayrac.fr",
+//            "0617205483"
+//        );
+//
+//        // Send the notification to the recipient
+//        $notifier->send($notification, $recipient);
+//        return $this->render('test.html.twig');
+//    }
 }
