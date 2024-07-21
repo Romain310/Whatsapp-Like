@@ -2,6 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Commission;
+use App\Entity\CommissionTemporaire;
+use App\Entity\NotificationCommission;
+use App\Entity\NotificationCommissionTemporaire;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,6 +27,24 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // On active les notifs pour toutes les commissions
+            foreach ($entityManager->getRepository(Commission::class)->findAll() as $commission) {
+                $notificationsCommissions = new NotificationCommission();
+                $notificationsCommissions->setCommission($commission);
+                $notificationsCommissions->setUser($user);
+                // Par défaut toutes les notifs sont actives
+                $notificationsCommissions->setActive(true);
+                $user->addNotificationsCommission($notificationsCommissions);
+            }
+            // On active les notifs pour toutes les commissions temporaires
+            foreach ($entityManager->getRepository(CommissionTemporaire::class)->findAll() as $commissionTemporaire) {
+                $notificationsCommissionsTemporaires = new NotificationCommissionTemporaire();
+                $notificationsCommissionsTemporaires->setCommissionTemporaire($commissionTemporaire);
+                $notificationsCommissionsTemporaires->setUser($user);
+                // Par défaut toutes les notifs sont actives
+                $notificationsCommissionsTemporaires->setActive(true);
+                $user->addNotificationsCommissionsTemporaire($notificationsCommissionsTemporaires);
+            }
             // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
