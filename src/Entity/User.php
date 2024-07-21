@@ -50,20 +50,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, NotificationCommission>
      */
-    #[ORM\OneToMany(targetEntity: NotificationCommission::class, mappedBy: 'user', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: NotificationCommission::class, mappedBy: 'user', cascade: ['persist'], orphanRemoval: true)]
     private Collection $notificationsCommissions;
 
     /**
      * @var Collection<int, NotificationCommissionTemporaire>
      */
-    #[ORM\OneToMany(targetEntity: NotificationCommissionTemporaire::class, mappedBy: 'user', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: NotificationCommissionTemporaire::class, mappedBy: 'user', cascade: ['persist'], orphanRemoval: true)]
     private Collection $notificationsCommissionsTemporaires;
+
+    /**
+     * @var Collection<int, MessageLu>
+     */
+    #[ORM\OneToMany(targetEntity: MessageLu::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $messagesLus;
 
     public function __construct()
     {
         $this->messages = new ArrayCollection();
         $this->notificationsCommissions = new ArrayCollection();
         $this->notificationsCommissionsTemporaires = new ArrayCollection();
+        $this->messagesLus = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -245,6 +252,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($notificationsCommissionsTemporaire->getUser() === $this) {
                 $notificationsCommissionsTemporaire->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MessageLu>
+     */
+    public function getMessagesLus(): Collection
+    {
+        return $this->messagesLus;
+    }
+
+    public function addMessagesLu(MessageLu $messagesLu): static
+    {
+        if (!$this->messagesLus->contains($messagesLu)) {
+            $this->messagesLus->add($messagesLu);
+            $messagesLu->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessagesLu(MessageLu $messagesLu): static
+    {
+        if ($this->messagesLus->removeElement($messagesLu)) {
+            // set the owning side to null (unless already changed)
+            if ($messagesLu->getUser() === $this) {
+                $messagesLu->setUser(null);
             }
         }
 

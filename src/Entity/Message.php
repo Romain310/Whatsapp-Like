@@ -38,10 +38,17 @@ class Message
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    /**
+     * @var Collection<int, MessageLu>
+     */
+    #[ORM\OneToMany(targetEntity: MessageLu::class, mappedBy: 'message', cascade: ['persist'])]
+    private Collection $usersReader;
+
     public function __construct()
     {
         $this->commissions = new ArrayCollection();
         $this->commissionsTemporaires = new ArrayCollection();
+        $this->usersReader = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -129,6 +136,36 @@ class Message
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MessageLu>
+     */
+    public function getUsersReader(): Collection
+    {
+        return $this->usersReader;
+    }
+
+    public function addUserReader(MessageLu $user): static
+    {
+        if (!$this->usersReader->contains($user)) {
+            $this->usersReader->add($user);
+            $user->setMessage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(MessageLu $user): static
+    {
+        if ($this->usersReader->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getMessage() === $this) {
+                $user->setMessage(null);
+            }
+        }
 
         return $this;
     }
