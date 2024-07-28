@@ -1,10 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Inscription{% endblock %}
 
 {% block body %}
-
-    {{ form_errors(registrationForm) }}
 
     {% if app.user %}
         <script type="text/javascript">
@@ -13,39 +11,63 @@
     {% endif %}
 
     {% if not app.user %}
-
-
-
         <div class="container-fluid h-100">
             <div class="row h-100">
-                <div class="col-6 m-auto">
-                    <div class="border border-light p-2 border-2 rounded-2 m-auto">
+                <div class="col-lg-6 m-auto">
+                    {{ form_start(registrationForm, {'attr': {'class': 'border border-light p-2 border-2 rounded-2 m-auto'}}) }}
+                    <img alt="Logo Limayrac" src="{{ asset('images/logo.png') }}" class="rounded mx-auto d-block img-fluid">
+                    <h1 class="h3 mb-3 font-weight-normal text-center"><b>Inscription</b></h1>
 
-                        <img alt="Logo Limayrac" src="{{ asset('images/logo.png') }}" class="rounded mx-auto d-block img-fluid">
-                        <h1 class="h3 mb-3 font-weight-normal text-center"><b>S'inscrire</b></h1>
-
-                        {{ form_start(registrationForm) }}
-
-                        <div class="mb-3 form-control">
-                            {{ form_row(registrationForm.nom) }}
-                        </div>
-                        <div class="mb-3 form-control">
-                            {{ form_row(registrationForm.prenom) }}
-                        </div>
-                        <div class="mb-3 form-control">
-                            {{ form_row(registrationForm.mail) }}
-                        </div>
-                        <div class="mb-3 form-control">
-                            {{ form_row(registrationForm.plainPassword, {label: 'Password'}) }}
-                        </div>
-                        {{ form_row(registrationForm.agreeTerms) }}
-                        <div class="row text-center">
-                            {{ form_end(registrationForm) }}
-                            <a href="{{ path('app_login') }}"><button type="submit" class="btn btn-secondary">Se connecter</button></a>
-                        </div>
+                    <div class="mb-2">
+                        {{ form_label(registrationForm.nom, 'Nom', {'label_attr': {'class': 'col-form-label'}}) }}
+                        {{ form_widget(registrationForm.nom, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
                     </div>
+
+                    <div class="mb-2">
+                        {{ form_label(registrationForm.prenom, 'Prénom', {'label_attr': {'class': 'col-form-label'}}) }}
+                        {{ form_widget(registrationForm.prenom, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+                    </div>
+
+                    <div class="mb-2">
+                        {{ form_label(registrationForm.mail, 'Adresse email', {'label_attr': {'class': 'col-form-label'}}) }}
+                        {{ form_widget(registrationForm.mail, {'attr': {'class': 'form-control', 'autocomplete': 'email', 'required': 'required'}}) }}
+                    </div>
+
+                    <div class="mb-2">
+                        {{ form_label(registrationForm.plainPassword, 'Mot de passe', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'autocomplete': 'new-password', 'required': 'required'}}) }}
+                    </div>
+
+{#                    <div class="mb-3">#}
+{#                        {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}#}
+{#                        {{ form_label(registrationForm.agreeTerms, "J'accepte les règles d'utilisation", {'label_attr': {'class': 'form-check-label'}}) }}#}
+{#                    </div>#}
+
+                    {% if form_errors(registrationForm.plainPassword) %}
+                        <hr class="opacity-0">
+                        <div class="mb-2 bg-danger text-white rounded-2 col-9 mx-auto text-center">
+                            <b>{{ form_errors(registrationForm.plainPassword) }}</b>
+                        </div>
+                        <hr class="opacity-0">
+                    {% endif %}
+
+{#                    {% if form_errors(registrationForm.agreeTerms) %}#}
+{#                        <hr class="opacity-0">#}
+{#                        <div class="mb-2 bg-danger text-white rounded-2 col-9 mx-auto text-center">#}
+{#                            <b>{{ form_errors(registrationForm.agreeTerms) }}</b>#}
+{#                        </div>#}
+{#                        <hr class="opacity-0">#}
+{#                    {% endif %}#}
+
+                    <div class="text-center">
+                        {{ form_widget(registrationForm.submit) }}
+                        <a href="{{ path('app_login') }}" class="btn btn-secondary">Se connecter</a>
+                    </div>
+
+                    {{ form_end(registrationForm) }}
                 </div>
             </div>
         </div>
     {% endif %}
+
 {% endblock %}
