@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Notifications{% endblock %}
+
+{% block body %}
+    <div class="content">
+        <a class="button back-button" href="{{ path('home') }}">Retour à l'index</a>
+        <h1 class="text-center">Activer/Désactiver notifications</h1>
+
+        <h2 class="text-center">Commissions</h2>
+        <form action="{{ path('updateNotification') }}" method="post">
+            {% for notificationCommission in notificationsCommissions %}
+                <label>
+                    <input type="hidden" name="commission{{notificationCommission.commission.id }}" value="0">
+                    {% if notificationCommission.active %}
+                        <input onchange="onChange(this)" type="checkbox" name="commission{{ notificationCommission.commission.id }}" value="{{ notificationCommission.active }}" checked>
+                    {% else %}
+                        <input onchange="onChange(this)" type="checkbox" name="commission{{ notificationCommission.commission.id }}" value="{{ notificationCommission.active }}">
+                    {% endif %}
+                    {{ notificationCommission.commission.libelle }}
+                </label>
+            {% endfor %}
+
+            <h2 class="text-center">Commissions Temporaires</h2>
+            {% for notificationCommissionTemporaire in notificationsCommissionsTemporaires %}
+                <label>
+                    <input type="hidden" name="commissionTemporaire{{notificationCommissionTemporaire.commissionTemporaire.id }}" value="0">
+                    {% if notificationCommissionTemporaire.active %}
+                        <input onchange="onChange(this)" type="checkbox" name="commissionTemporaire{{notificationCommissionTemporaire.commissionTemporaire.id }}" value="{{ notificationCommissionTemporaire.active }}" checked>
+                    {% else %}
+                        <input onchange="onChange(this)" type="checkbox" name="commissionTemporaire{{notificationCommissionTemporaire.commissionTemporaire.id }}" value="{{ notificationCommissionTemporaire.active }}">
+                    {% endif %}
+                    {{ notificationCommissionTemporaire.commissionTemporaire.libelle }}
+                </label>
+            {% endfor %}
+            <input class="btn btn-primary" type="submit" value="Valider">
+        </form>
+    </div>
+    <script>
+        function onChange(element) {
+            if (element.checked) {
+                element.value = 1;
+            } else {
+                element.value = 0;
+            }
+        }
+    </script>
+{% endblock %}
