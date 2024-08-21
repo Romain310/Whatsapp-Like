@@ -10,26 +10,20 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                {% if is_granted('ROLE_USER') %} {#TODO : Changer en ROLE Admin#}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administration</a>
-                        <ul class="dropdown-menu">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administration</a>
+                    <ul class="dropdown-menu">
+                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_PRIVILEGED') %}
                             <li><a class="dropdown-item" href="#">Créer commission</a></li>
                             <li><a class="dropdown-item" href="#">Modifier commission</a></li>
                             <li><hr class="dropdown-divider"></li>
+                        {% endif %}
+                        {% if is_granted('ROLE_ADMIN') %}
                             <li><a class="dropdown-item" href="{{ path('admin') }}">Pannel d'administration</a></li>
-                        </ul>
-                    </li>
-                {% endif %}
-                {% if is_granted('ROLE_USER') %} {#TODO : Changer en ROLE Utilisateur privilégié#}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Utilisateur privilégié</a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Créer commission</a></li>
-                            <li><a class="dropdown-item" href="#">Modifier commission</a></li>
-                        </ul>
-                    </li>
-                {% endif %}
+                        {% endif %}
+                        <li><a class="dropdown-item" href="{{ path('gestionNotifications') }}">Désactiver notifications</a></li>
+                    </ul>
+                </li>
             </ul>
             <form class="d-flex" action="{{ path('app_logout') }}" method="post">
                 <button type="submit" class="btn btn-danger ">Se déconnecter</button>

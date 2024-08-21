@@ -2,28 +2,18 @@
 
 {# Contenu card page index ADMIN #}
 
-{% if is_granted('ROLE_USER') %} {#TODO : Changer en ROLE Admin#}
 
-    <hr>
-
-    <h4 class="text-center"><b>Administration</b></h4>
+    <h4 class="text-center"><b>Menu</b></h4>
 
     <div class="text-center">
-        <a href="{{ path('admin') }}" class="btn btn-primary">Créer commission</a>
-        <a href="{{ path('admin') }}" class="btn btn-danger">Modifier commission</a>
-        <hr class="opacity-0">
-        <a href="{{ path('admin') }}" class="btn btn-secondary">Page administration</a>
+        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_PRIVILEGED') %}
+            <a href="{{ path('admin') }}" class="btn btn-primary">Créer commission</a>
+            <a href="{{ path('admin') }}" class="btn btn-danger">Modifier commission</a>
+            <hr class="opacity-0">
+        {% endif %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('admin') }}" class="btn btn-secondary">Page administration</a>
+            <hr class="opacity-0">
+        {% endif %}
+        <a href="{{ path('gestionNotifications') }}" class="btn btn-secondary">Désactiver notifications</a>
     </div>
-{% endif %}
-
-{% if is_granted('ROLE_USER') %} {#TODO : Changer en ROLE Utilisateur privilégié#}
-
-    <hr>
-
-    <h4 class="text-center"><b>Utilisateur privilégié</b></h4>
-
-    <div class="text-center">
-        <a href="{{ path('admin') }}" class="btn btn-primary">Créer commission</a>
-        <a href="{{ path('admin') }}" class="btn btn-danger">Modifier commission</a>
-    </div>
-{% endif %}

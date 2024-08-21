@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'home')]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(EntityManagerInterface $entityManager, UserInterface $user): Response
     {
         $dateActuelle = date('Y-m-d');
 
@@ -28,6 +28,10 @@ class HomeController extends AbstractController
         $commissionsTemporaireClos = $entityManager->getRepository(CommissionTemporaire::class)->findClos($dateActuelle);
         //Recupère objet commission général (ID 1)
         $commissionGeneral = $entityManager->getRepository(Commission::class)->find(1);
+
+        // On récupère la liste des commissions où les notifications sont actives
+        $commissionNotifActive = $entityManager->getRepository(Commission::class)->findByUserAndActive($user, true);
+        $commissionTemporaireNotifActive = $entityManager->getRepository(CommissionTemporaire::class)->findByUserAndActive($user, true);
 
         $messagesNonLu = $entityManager->getRepository(MessageLu::class)->findBy(['user' =>  $this->getUser()->getId(), 'lu' => false]);
 
@@ -71,6 +75,8 @@ class HomeController extends AbstractController
             "commissionSelected" => $commissionGeneral,
             "messageNonLuCommission" => $mapNonLuByCommission,
             "messageNonLuCommissionTemporaire" => $mapNonLuByCommissionTemporaire,
+            "commissionNotifActive" => $commissionNotifActive,
+            "commissionTemporaireNotifActive" => $commissionTemporaireNotifActive,
         ];
 
         //Affiche la vue
@@ -78,7 +84,7 @@ class HomeController extends AbstractController
     }
 
     #[Route('/commission/{libelleCommission}', name: 'messageCommission')]
-    public function messageCommission(Request $request, EntityManagerInterface $entityManager, string $libelleCommission): Response
+    public function messageCommission(Request $request, EntityManagerInterface $entityManager, string $libelleCommission, UserInterface $user): Response
     {
         $dateActuelle = date('Y-m-d');
 
@@ -86,6 +92,10 @@ class HomeController extends AbstractController
         $commissions = $entityManager->getRepository(Commission::class)->findAll();
         $commissionsTemporaireNonClos = $entityManager->getRepository(CommissionTemporaire::class)->findNonClos($dateActuelle);
         $commissionsTemporaireClos = $entityManager->getRepository(CommissionTemporaire::class)->findClos($dateActuelle);
+
+        // On récupère la liste des commissions où les notifications sont actives
+        $commissionNotifActive = $entityManager->getRepository(Commission::class)->findByUserAndActive($user, true);
+        $commissionTemporaireNotifActive = $entityManager->getRepository(CommissionTemporaire::class)->findByUserAndActive($user, true);
 
         $messagesNonLu = $entityManager->getRepository(MessageLu::class)->findBy(['user' =>  $this->getUser()->getId(), 'lu' => false]);
 
@@ -133,6 +143,8 @@ class HomeController extends AbstractController
                 "commissionSelected" => $commissionSelected,
                 "messageNonLuCommission" => $mapNonLuByCommission,
                 "messageNonLuCommissionTemporaire" => $mapNonLuByCommissionTemporaire,
+                "commissionNotifActive" => $commissionNotifActive,
+                "commissionTemporaireNotifActive" => $commissionTemporaireNotifActive,
             ];
             //Affiche la vue
             return $this->render('index.html.twig', $params);
@@ -156,6 +168,10 @@ class HomeController extends AbstractController
         $commissionSelected = $entityManager->getRepository(CommissionTemporaire::class)->find($idCommissionTemporaire);
 
         $messagesNonLu = $entityManager->getRepository(MessageLu::class)->findBy(['user' =>  $this->getUser()->getId(), 'lu' => false]);
+
+        // On récupère la liste des commissions où les notifications sont actives
+        $commissionNotifActive = $entityManager->getRepository(Commission::class)->findByUserAndActive($user, true);
+        $commissionTemporaireNotifActive = $entityManager->getRepository(CommissionTemporaire::class)->findByUserAndActive($user, true);
 
         // On compte les messages non lu par commissions
         $mapNonLuByCommission = array();
@@ -199,6 +215,8 @@ class HomeController extends AbstractController
                 "commissionTemporaireSelected" => $commissionSelected,
                 "messageNonLuCommission" => $mapNonLuByCommission,
                 "messageNonLuCommissionTemporaire" => $mapNonLuByCommissionTemporaire,
+                "commissionNotifActive" => $commissionNotifActive,
+                "commissionTemporaireNotifActive" => $commissionTemporaireNotifActive,
             ];
             //Affiche la vue
             return $this->render('index.html.twig', $params);
@@ -208,7 +226,7 @@ class HomeController extends AbstractController
         }
     }
     #[Route('/commission-clos/{idCommissionTemporaire}', name: 'messageCommissionTemporaireClos')]
-    public function messageCommissionTemporaireClos(EntityManagerInterface $entityManager, string $idCommissionTemporaire): Response
+    public function messageCommissionTemporaireClos(EntityManagerInterface $entityManager, string $idCommissionTemporaire, UserInterface $user): Response
     {
         $dateActuelle = date('Y-m-d');
 
@@ -219,6 +237,10 @@ class HomeController extends AbstractController
 
         //Recupère le commission en fonction de son libelle
         $commissionSelected = $entityManager->getRepository(CommissionTemporaire::class)->find($idCommissionTemporaire);
+
+        // On récupère la liste des commissions où les notifications sont actives
+        $commissionNotifActive = $entityManager->getRepository(Commission::class)->findByUserAndActive($user, true);
+        $commissionTemporaireNotifActive = $entityManager->getRepository(CommissionTemporaire::class)->findByUserAndActive($user, true);
 
         $messagesNonLu = $entityManager->getRepository(MessageLu::class)->findBy(['user' =>  $this->getUser()->getId(), 'lu' => false]);
 
@@ -264,6 +286,8 @@ class HomeController extends AbstractController
                 "commissionTemporaireSelected" => $commissionSelected,
                 "messageNonLuCommission" => $mapNonLuByCommission,
                 "messageNonLuCommissionTemporaire" => $mapNonLuByCommissionTemporaire,
+                "commissionNotifActive" => $commissionNotifActive,
+                "commissionTemporaireNotifActive" => $commissionTemporaireNotifActive,
             ];
             //Affiche la vue
             return $this->render('index.html.twig', $params);
