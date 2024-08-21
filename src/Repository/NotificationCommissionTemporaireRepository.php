@@ -16,20 +16,29 @@ class NotificationCommissionTemporaireRepository extends ServiceEntityRepository
         parent::__construct($registry, NotificationCommissionTemporaire::class);
     }
 
-    //    /**
-    //     * @return NotificationCommissionTemporaire[] Returns an array of NotificationCommissionTemporaire objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('n')
-    //            ->andWhere('n.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('n.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+        /**
+         * @return NotificationCommissionTemporaire[] Returns an array of NotificationCommissionTemporaire objects
+         */
+        public function findByUser($user): array
+        {
+            return $this->createQueryBuilder('notification_commission_temporaire')
+                ->andWhere('notification_commission_temporaire.user = :user')
+                ->setParameter('user', $user)
+                ->getQuery()
+                ->getResult();
+        }
+
+    public function findByUserAndCommissionTemporaire($user, $commission): array
+    {
+        return $this->createQueryBuilder('notification_commission_temporaire')
+            ->andWhere('notification_commission_temporaire.user = :user')
+            ->andWhere('notification_commission_temporaire.commissionTemporaire = :commission')
+            ->setParameter('user', $user)
+            ->setParameter('commission', $commission)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 
     //    public function findOneBySomeField($value): ?NotificationCommissionTemporaire
     //    {

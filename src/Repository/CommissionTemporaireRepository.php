@@ -41,6 +41,19 @@ class CommissionTemporaireRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findByUserAndActive($user, $active): array
+    {
+        return $this->createQueryBuilder('ct')
+            ->join('ct.notificationsUsers', 'nct', 'WITH', 'nct.commissionTemporaire = ct.id')
+            ->andWhere('nct.active = :val')
+            ->andWhere('nct.user = :user')
+            ->setParameter('val', $active)
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     //    public function findOneBySomeField($value): ?CommissionTemporaire
     //    {
     //        return $this->createQueryBuilder('c')

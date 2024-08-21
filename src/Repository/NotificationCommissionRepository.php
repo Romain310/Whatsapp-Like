@@ -16,20 +16,30 @@ class NotificationCommissionRepository extends ServiceEntityRepository
         parent::__construct($registry, NotificationCommission::class);
     }
 
-    //    /**
-    //     * @return NotificationCommission[] Returns an array of NotificationCommission objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('n')
-    //            ->andWhere('n.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('n.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+        /**
+         * @return NotificationCommission[] Returns an array of NotificationCommission objects
+         */
+        public function findByUser($user): array
+        {
+            return $this->createQueryBuilder('notification_commission')
+                ->andWhere('notification_commission.user = :user')
+                ->setParameter('user', $user)
+                ->getQuery()
+                ->getResult()
+            ;
+        }
+
+        public function findByUserAndCommission($user, $commission): array
+        {
+            return $this->createQueryBuilder('notification_commission')
+                ->andWhere('notification_commission.user = :user')
+                ->andWhere('notification_commission.commission = :commission')
+                ->setParameter('user', $user)
+                ->setParameter('commission', $commission)
+                ->getQuery()
+                ->getResult()
+            ;
+        }
 
     //    public function findOneBySomeField($value): ?NotificationCommission
     //    {
