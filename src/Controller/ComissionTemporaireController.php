@@ -12,13 +12,14 @@ use App\Repository\CommissionTemporaireRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ComissionTemporaireController extends AbstractController
 {
     #[Route('/creationCommissionTemporaire', name: 'creationCommissionTemporaire')]
-    public function creationCommissionTemporaire(EntityManagerInterface $entityManager): Response
+    public function creationCommissionTemporaire(Request $request,EntityManagerInterface $entityManager): Response
     {
         $userRepository = $entityManager->getRepository(User::class);
 
@@ -27,6 +28,7 @@ class ComissionTemporaireController extends AbstractController
         $commissionTemporaire->setCloture(new \DateTimeImmutable('tomorrow'));
 
         $form = $this->createForm(CommissionTemporaireFormType::class, $commissionTemporaire);
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $users = $userRepository->findAll();
