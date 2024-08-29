@@ -5,6 +5,8 @@
 namespace App\Controller;
 
 use App\Entity\CommissionTemporaire;
+use App\Entity\NotificationCommissionTemporaire;
+use App\Entity\User;
 use App\Form\CommissionTemporaireFormType;
 use App\Repository\CommissionTemporaireRepository;
 use App\Repository\UserRepository;
@@ -18,7 +20,7 @@ class ComissionTemporaireController extends AbstractController
     #[Route('/creationCommissionTemporaire', name: 'creationCommissionTemporaire')]
     public function creationCommissionTemporaire(EntityManagerInterface $entityManager): Response
     {
-        $commissionTemporaireRepository = $entityManager->getRepository(CommissionTemporaire::class);
+        $userRepository = $entityManager->getRepository(User::class);
 
         $commissionTemporaire = new CommissionTemporaire();
         $commissionTemporaire->setDebut(new \DateTimeImmutable('now'));
@@ -27,6 +29,14 @@ class ComissionTemporaireController extends AbstractController
         $form = $this->createForm(CommissionTemporaireFormType::class, $commissionTemporaire);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $users = $userRepository->findAll();
+            foreach ($users as $user) {
+                $notificationCommissionTemporaire = new NotificationCommissionTemporaire();
+                $notificationCommissionTemporaire->setUser($user);
+                $notificationCommissionTemporaire->setActive(true);
+                $notificationCommissionTemporaire->setCommissionTemporaire($commissionTemporaire);
+                $commissionTemporaire->addNotificationsUser($notificationCommissionTemporaire);
+            }
             $entityManager->persist($commissionTemporaire);
             $entityManager->flush();
         }
