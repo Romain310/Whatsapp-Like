@@ -34,7 +34,7 @@ class CommissionTemporaire
     /**
      * @var Collection<int, NotificationCommissionTemporaire>
      */
-    #[ORM\OneToMany(targetEntity: NotificationCommissionTemporaire::class, mappedBy: 'commissionTemporaire', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: NotificationCommissionTemporaire::class, mappedBy: 'commissionTemporaire', cascade: ['persist'], orphanRemoval: true)]
     private Collection $notificationsUsers;
 
     public function __construct()
