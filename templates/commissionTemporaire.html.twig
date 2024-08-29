@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Création Commission Temporaire{% endblock %}
+
+{% block body %}
+    <div class="content">
+        <h1>Création Commission Temporaire</h1>
+        <a class="button back-button" href="{{ path('home') }}">Retour à l'index</a>
+        {{ form_start(commissionTemporaireForm, {'attr': {'class': 'border border-light p-2 border-2 rounded-2 m-auto'}}) }}
+        <div class="mb-2">
+            {{ form_label(commissionTemporaireForm.libelle, 'Libellé', {'label_attr': {'class': 'col-form-label'}}) }}
+            {{ form_widget(commissionTemporaireForm.libelle, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+        </div>
+        <div class="mb-2">
+            {{ form_label(commissionTemporaireForm.debut, 'Début', {'label_attr': {'class': 'col-form-label'}}) }}
+            {{ form_widget(commissionTemporaireForm.debut, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+        </div>
+        <div class="mb-2">
+            {{ form_label(commissionTemporaireForm.cloture, 'Clôture', {'label_attr': {'class': 'col-form-label'}}) }}
+            {{ form_widget(commissionTemporaireForm.cloture, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+        </div>
+
+        <div class="text-center">
+            {{ form_widget(commissionTemporaireForm.submitbutton) }}
+        </div>
+        {{ form_end(commissionTemporaireForm) }}
+    </div>
+{% endblock %}
