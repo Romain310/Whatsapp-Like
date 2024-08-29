@@ -11,10 +11,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administration</a>
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Menu</a>
                     <ul class="dropdown-menu">
                         {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_PRIVILEGED') %}
-                            <li><a class="dropdown-item" href="#">Créer commission</a></li>
+                            <li><a class="dropdown-item" href="{{ path('creationCommissionTemporaire') }}">Créer commission</a></li>
                             <li><a class="dropdown-item" href="#">Modifier commission</a></li>
                             <li><hr class="dropdown-divider"></li>
                         {% endif %}

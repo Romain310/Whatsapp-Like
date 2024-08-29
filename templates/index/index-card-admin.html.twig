@@ -7,7 +7,7 @@
 
     <div class="text-center">
         {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_PRIVILEGED') %}
-            <a href="{{ path('admin') }}" class="btn btn-primary">Créer commission</a>
+            <a href="{{ path('creationCommissionTemporaire') }}" class="btn btn-primary">Créer commission</a>
             <a href="{{ path('admin') }}" class="btn btn-danger">Modifier commission</a>
             <hr class="opacity-0">
         {% endif %}
