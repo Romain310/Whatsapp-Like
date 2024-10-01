@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Page Admin{% endblock %}
+{% block title %}Panneau d'administration{% endblock %}
 
 {% block body %}
     <div class="content">
         <a class="button back-button" href="{{ path('home') }}">Retour à l'index</a>
-        <h1>Page Admin</h1>
-        <p>Voici la liste des utilisateurs</p>
+        <h1>Panneau d'administration</h1>
+        <h4>Liste des utilisateurs de WhatsApp-Like</h4>
 
         <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead>
+            <table class="table table-bordered table-light border-dark-subtle">
+                <thead class="table-secondary border-dark-subtle">
                 <tr class="text-center">
                     <th>Nom</th>
                     <th>Prénom</th>
@@ -19,7 +19,7 @@
                     <th colspan="2">Paramètres utilisateur</th>
                 </tr>
                 </thead>
-    <tbody>
+    <tbody class="table-group-divider">
     {% for user in users %}
         <tr>
             <td>{{ user.nom }}</td>
