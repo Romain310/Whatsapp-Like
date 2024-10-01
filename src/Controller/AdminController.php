@@ -35,4 +35,25 @@ class AdminController extends AbstractController
 
         return $this->redirectToRoute('admin');
     }
+
+    #[Route('/admin/edit/{id}', name: 'admin_edit')]
+    public function edit(User $user, Request $request, EntityManagerInterface $em): Response
+    {
+        // Vérifie le token CSRF
+        if ($this->isCsrfTokenValid('edit-user-' . $user->getId(), $request->request->get('_token'))) {
+            $user->setNom($request->request->get('nom'));
+            $user->setPrenom($request->request->get('prenom'));
+            $user->setMail($request->request->get('mail'));
+
+            // Utiliser 'request->get()' avec 'roles' en tant que tableau
+            $user->setRoles($request->request->all('roles')); // Spécifie que 'roles' est un tableau
+
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash('success', 'Utilisateur modifié avec succès.');
+        }
+
+        return $this->redirectToRoute('admin');
+    }
 }
