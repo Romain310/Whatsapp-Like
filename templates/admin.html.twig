@@ -57,7 +57,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
 
-                        <!-- Formulaire de suppression -->
+                        <!-- Formulaire de suppression d'un user -->
                         <form method="post" action="{{ path('admin_delete', {id: user.id}) }}">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete-user-' ~ user.id) }}">
                             <input type="hidden" name="_method" value="DELETE">
