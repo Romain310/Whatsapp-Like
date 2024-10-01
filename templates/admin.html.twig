@@ -19,50 +19,54 @@
                     <th colspan="2">Paramètres utilisateur</th>
                 </tr>
                 </thead>
-                <tbody>
-                {% for user in users %}
-                    <tr>
-                        <td>{{ user.nom }}</td>
-                        <td>{{ user.prenom }}</td>
-                        <td>{{ user.mail }}</td>
-                        {#                        <td>{{ user.roles | join(', ') }}</td>#}
-                        <td>{% set roleNames = {
-                                'ROLE_USER': 'Utilisateur',
-                                'ROLE_ADMIN': 'Administrateur'
-                            } %}
-                            {{ user.roles | map(role => roleNames[role] | default(role)) | join(', ') }}</td>
-                        <td><div class="text-center">
-                                <button type="submit" class="btn btn-primary">Modifier</button>
-                            </div></td>
-                        <td><div class="text-center">
-                                <button type="submit" class="btn btn-danger"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">Supprimer</button>
-                            </div></td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <!-- Autres boutons pour plus tard -->
-        <button type="submit" class="btn btn-primary">Ajouter un utilisateur</button>
-    </div>
+    <tbody>
+    {% for user in users %}
+        <tr>
+            <td>{{ user.nom }}</td>
+            <td>{{ user.prenom }}</td>
+            <td>{{ user.mail }}</td>
+            <td>{% set roleNames = {
+                    'ROLE_USER': 'Utilisateur',
+                    'ROLE_ADMIN': 'Administrateur'
+                } %}
+                {{ user.roles | map(role => roleNames[role] | default(role)) | join(', ') }}</td>
+            <td><div class="text-center">
+                    <button type="submit" class="btn btn-primary">Modifier</button>
+                </div></td>
+            <td>
+                <div class="text-center">
+                    <!-- Bouton qui déclenche l'ouverture de la modale -->
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{ user.id }}">
+                        Supprimer
+                    </button>
+                </div>
+            </td>
+        </tr>
 
-    <!-- Modal -->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Suppression de l'utilisateur</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Attention, vous êtes sur le point de supprimer cet utilisateur. Continuer ?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-danger">Supprimer</button>
+        <!-- Modale spécifique pour chaque utilisateur -->
+        <div class="modal fade" id="staticBackdrop{{ user.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel{{ user.id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel{{ user.id }}">Suppression de l'utilisateur</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Attention, vous êtes sur le point de supprimer cet utilisateur : {{ user.nom }} {{ user.prenom }}. Continuer ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+
+                        <!-- Formulaire de suppression -->
+                        <form method="post" action="{{ path('admin_delete', {id: user.id}) }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete-user-' ~ user.id) }}">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-
+    {% endfor %}
+    </tbody>
 {% endblock %}
