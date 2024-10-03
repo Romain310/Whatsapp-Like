@@ -26,6 +26,7 @@ class HomeController extends AbstractController
         $commissions = $entityManager->getRepository(Commission::class)->findAll();
         $commissionsTemporaireNonClos = $entityManager->getRepository(CommissionTemporaire::class)->findNonClos($dateActuelle);
         $commissionsTemporaireClos = $entityManager->getRepository(CommissionTemporaire::class)->findClos($dateActuelle);
+        $commissionsTemporaireFutur = $entityManager->getRepository(CommissionTemporaire::class)->findFutur($dateActuelle);
         //Recupère objet commission général (ID 1)
         $commissionGeneral = $entityManager->getRepository(Commission::class)->find(1);
 
@@ -71,6 +72,7 @@ class HomeController extends AbstractController
             "commissions" => $commissions,
             "commissionsTemporaireNonClos" => $commissionsTemporaireNonClos,
             "commissionsTemporaireClos" => $commissionsTemporaireClos,
+            "commissionsTemporaireFutur" => $commissionsTemporaireFutur,
             "dateActuelle" => $dateActuelle,
             "commissionSelected" => $commissionGeneral,
             "messageNonLuCommission" => $mapNonLuByCommission,
@@ -92,6 +94,7 @@ class HomeController extends AbstractController
         $commissions = $entityManager->getRepository(Commission::class)->findAll();
         $commissionsTemporaireNonClos = $entityManager->getRepository(CommissionTemporaire::class)->findNonClos($dateActuelle);
         $commissionsTemporaireClos = $entityManager->getRepository(CommissionTemporaire::class)->findClos($dateActuelle);
+        $commissionsTemporaireFutur = $entityManager->getRepository(CommissionTemporaire::class)->findFutur($dateActuelle);
 
         // On récupère la liste des commissions où les notifications sont actives
         $commissionNotifActive = $entityManager->getRepository(Commission::class)->findByUserAndActive($user, true);
@@ -139,6 +142,7 @@ class HomeController extends AbstractController
                 "commissions" => $commissions,
                 "commissionsTemporaireNonClos" => $commissionsTemporaireNonClos,
                 "commissionsTemporaireClos" => $commissionsTemporaireClos,
+                "commissionsTemporaireFutur" => $commissionsTemporaireFutur,
                 "dateActuelle" => $dateActuelle,
                 "commissionSelected" => $commissionSelected,
                 "messageNonLuCommission" => $mapNonLuByCommission,
@@ -163,6 +167,7 @@ class HomeController extends AbstractController
         $commissions = $entityManager->getRepository(Commission::class)->findAll();
         $commissionsTemporaireNonClos = $entityManager->getRepository(CommissionTemporaire::class)->findNonClos($dateActuelle);
         $commissionsTemporaireClos = $entityManager->getRepository(CommissionTemporaire::class)->findClos($dateActuelle);
+        $commissionsTemporaireFutur = $entityManager->getRepository(CommissionTemporaire::class)->findFutur($dateActuelle);
 
         //Recupère le commission en fonction de son libelle
         $commissionSelected = $entityManager->getRepository(CommissionTemporaire::class)->find($idCommissionTemporaire);
@@ -211,6 +216,7 @@ class HomeController extends AbstractController
                 "commissions" => $commissions,
                 "commissionsTemporaireNonClos" => $commissionsTemporaireNonClos,
                 "commissionsTemporaireClos" => $commissionsTemporaireClos,
+                "commissionsTemporaireFutur" => $commissionsTemporaireFutur,
                 "dateActuelle" => $dateActuelle,
                 "commissionTemporaireSelected" => $commissionSelected,
                 "messageNonLuCommission" => $mapNonLuByCommission,
@@ -234,6 +240,7 @@ class HomeController extends AbstractController
         $commissions = $entityManager->getRepository(Commission::class)->findAll();
         $commissionsTemporaireNonClos = $entityManager->getRepository(CommissionTemporaire::class)->findNonClos($dateActuelle);
         $commissionsTemporaireClos = $entityManager->getRepository(CommissionTemporaire::class)->findClos($dateActuelle);
+        $commissionsTemporaireFutur = $entityManager->getRepository(CommissionTemporaire::class)->findFutur($dateActuelle);
 
         //Recupère le commission en fonction de son libelle
         $commissionSelected = $entityManager->getRepository(CommissionTemporaire::class)->find($idCommissionTemporaire);
@@ -282,6 +289,7 @@ class HomeController extends AbstractController
                 "commissions" => $commissions,
                 "commissionsTemporaireNonClos" => $commissionsTemporaireNonClos,
                 "commissionsTemporaireClos" => $commissionsTemporaireClos,
+                "commissionsTemporaireFutur" => $commissionsTemporaireFutur,
                 "dateActuelle" => $dateActuelle,
                 "commissionTemporaireSelected" => $commissionSelected,
                 "messageNonLuCommission" => $mapNonLuByCommission,

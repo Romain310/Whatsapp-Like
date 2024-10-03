@@ -22,6 +22,7 @@ class CommissionTemporaireRepository extends ServiceEntityRepository
     public function findNonClos($value): array
     {
         return $this->createQueryBuilder('c')
+            ->andWhere('c.debut < :val')
             ->andWhere('c.cloture >= :val')
             ->setParameter('val', $value)
             ->orderBy('c.id', 'ASC')
@@ -33,7 +34,19 @@ class CommissionTemporaireRepository extends ServiceEntityRepository
     public function findClos($value): array
     {
         return $this->createQueryBuilder('c')
+//            ->andWhere('c.debut > :val')
             ->andWhere('c.cloture < :val')
+            ->setParameter('val', $value)
+            ->orderBy('c.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findFutur($value): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.debut > :val')
             ->setParameter('val', $value)
             ->orderBy('c.id', 'ASC')
             ->getQuery()

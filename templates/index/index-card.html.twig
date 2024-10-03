@@ -77,13 +77,47 @@
 
 <hr class="opacity-0">
 
-{# Commission temporaire clos #}
+{# Commission temporaire à venir / clos #}
 
 {% if is_granted('ROLE_ADMIN') %}
 
     <div class="card">
         <div class="card-header">
-            <b>Commissions Temporaires 🔐</b>
+            <b>Commissions Temporaires à venir 🕒</b>
+        </div>
+        <div class="overflow-y-auto" style="height: calc(5 * 2.55rem);">       {# 1 ligne = 2.55rem #}
+            <ul class="list-group list-group-flush">
+                {% if commissionsTemporaireFutur|length == 0 %}
+                    <li class="list-group-item"><b>Aucune commission disponible</b></li>
+                {% else %}
+                    {% for commissionTemporaire in commissionsTemporaireFutur %}
+                        {% if "/commission-clos/" ~ commissionTemporaire.id == app.request.pathInfo %}
+                            <li class="list-group-item active">{{ commissionTemporaire.libelle }}</li>
+                        {% else %}
+                            <li class="list-group-item">
+                                <a href="/commission-clos/{{ commissionTemporaire.id }}">{{ commissionTemporaire.libelle }}</a>
+                                {% if commissionTemporaire in commissionTemporaireNotifActive %}
+                                    <!-- Affichage du nombre de message non lu -->
+                                    {% if commissionTemporaire.id in messageNonLuCommissionTemporaire|keys %}
+                                        <span class="badge text-bg-secondary">{{ messageNonLuCommissionTemporaire[commissionTemporaire.id] }}</span>
+                                    {% endif %}
+                                {% else %}
+                                    <!-- Les notifications sont désactivées-->
+                                    🚫
+                                {% endif %}
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+
+    <hr class="opacity-0">
+
+    <div class="card">
+        <div class="card-header">
+            <b>Commissions Temporaires clos 🔐</b>
         </div>
         <div class="overflow-y-auto" style="height: calc(5 * 2.55rem);">       {# 1 ligne = 2.55rem #}
             <ul class="list-group list-group-flush">
