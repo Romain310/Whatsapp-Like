@@ -22,6 +22,21 @@ class AdminController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/admin/user/{id}/toggle", name="admin_toggle_user")
+     */
+    public function toggleUserStatus(User $user, EntityManagerInterface $entityManager): Response
+    {
+        // On inverse l'état du champ "actif" (0 -> 1 ou 1 -> 0)
+        $user->setActif(!$user->isActif());
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('admin_user_list');
+    }
+
+
     #[Route('/admin/delete/{id}', name: 'admin_delete')]
     public function delete(User $user, EntityManagerInterface $em, Request $request): Response
     {
@@ -48,6 +63,8 @@ class AdminController extends AbstractController
             // Utiliser 'request->get()' avec 'roles' en tant que tableau
             $user->setRoles($request->request->all('roles')); // Spécifie que 'roles' est un tableau
 
+            // Mise à jour du statut actif/inactif
+            $user->setActif($request->request->get('actif')); // Récupère la valeur de 'actif'
             $em->persist($user);
             $em->flush();
 
