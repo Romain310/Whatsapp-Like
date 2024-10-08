@@ -28,13 +28,13 @@
                                 {% if commission not in commissionNotifActive %}
                                     <a>🔕</a>
                                 {% endif %}
-                                <a class="navbar-toggler" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
+                                <a class="navbar-toggler text-decoration-none" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
                                 <ul class="dropdown-menu">
                                     {% if commission in commissionNotifActive %}
-                                        <li><a class="dropdown-item" href="#">Désactiver les notifications</a></li>
+                                        <li><a class="dropdown-item" href="{{ path('gestionNotifications') }}">Désactiver les notifications</a></li>
                                         <li><a class="dropdown-item" href="#">Marquer tout comme lu</a></li>
                                     {% else %}
-                                        <li><a class="dropdown-item" href="#">Activer les notifications</a></li>
+                                        <li><a class="dropdown-item" href="{{ path('gestionNotifications') }}">Activer les notifications</a></li>
                                     {% endif %}
                                 </ul>
                             </div>
@@ -53,13 +53,13 @@
                                     <!-- Les notifications sont désactivées-->
                                     <a>🔕</a>
                                 {% endif %}
-                                <a class="navbar-toggler" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
+                                <a class="navbar-toggler text-decoration-none" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
                                 <ul class="dropdown-menu">
                                     {% if commission in commissionNotifActive %}
-                                        <li><a class="dropdown-item" href="#">Désactiver les notifications</a></li>
+                                        <li><a class="dropdown-item" href="{{ path('gestionNotifications') }}">Désactiver les notifications</a></li>
                                         <li><a class="dropdown-item" href="#">Marquer tout comme lu</a></li>
                                     {% else %}
-                                        <li><a class="dropdown-item" href="#">Activer les notifications</a></li>
+                                        <li><a class="dropdown-item" href="{{ path('gestionNotifications') }}">Activer les notifications</a></li>
                                     {% endif %}
                                 </ul>
                             </div>
@@ -78,8 +78,11 @@
 
 <div class="card">
 
-    <div class="card-header">
+    <div class="card-header d-flex justify-content-between align-items-center">
         <b>Commissions Temporaires</b>
+        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_PRIVILEGED') %}
+            <a class="ms-auto text-black text-decoration-none" href="{{ path('creationCommissionTemporaire') }}" role="button" aria-expanded="false"><b>+</b></a>
+        {% endif %}
     </div>
 
     <div class="overflow-y-auto" style="height: calc(5 * 2.55rem);">       {# 1 ligne = 2.55rem #}
@@ -99,13 +102,13 @@
                                 {% if commissionTemporaire not in commissionTemporaireNotifActive %}
                                     <a>🔕</a>
                                 {% endif %}
-                                <a class="navbar-toggler" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
+                                <a class="navbar-toggler text-decoration-none" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
                                 <ul class="dropdown-menu">
                                     {% if commissionTemporaire in commissionTemporaireNotifActive %}
-                                        <li><a class="dropdown-item" href="#">Désactiver les notifications</a></li>
+                                        <li><a class="dropdown-item" href="{{ path('gestionNotifications') }}">Désactiver les notifications</a></li>
                                         <li><a class="dropdown-item" href="#">Marquer tout comme lu</a></li>
                                     {% else %}
-                                        <li><a class="dropdown-item" href="#">Activer les notifications</a></li>
+                                        <li><a class="dropdown-item" href="{{ path('gestionNotifications') }}">Activer les notifications</a></li>
                                     {% endif %}
                                     {% if is_granted('ROLE_ADMIN') %}
                                         <li><hr class="dropdown-divider"></li>
@@ -127,13 +130,13 @@
                                     <!-- Les notifications sont désactivées-->
                                     <a>🔕</a>
                                 {% endif %}
-                                <a class="navbar-toggler" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
+                                <a class="navbar-toggler text-decoration-none" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
                                 <ul class="dropdown-menu">
                                     {% if commissionTemporaire in commissionTemporaireNotifActive %}
-                                        <li><a class="dropdown-item" href="#">Désactiver les notifications</a></li>
+                                        <li><a class="dropdown-item" href="{{ path('gestionNotifications') }}">Désactiver les notifications</a></li>
                                         <li><a class="dropdown-item" href="#">Marquer tout comme lu</a></li>
                                     {% else %}
-                                        <li><a class="dropdown-item" href="#">Activer les notifications</a></li>
+                                        <li><a class="dropdown-item" href="{{ path('gestionNotifications') }}">Activer les notifications</a></li>
                                     {% endif %}
                                     {% if is_granted('ROLE_ADMIN') %}
                                         <li><hr class="dropdown-divider"></li>
@@ -158,8 +161,11 @@
 
     <div class="card">
 
-        <div class="card-header">
+        <div class="card-header d-flex justify-content-between align-items-center">
             <b>Commissions Temporaires à venir 🕒</b>
+            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_PRIVILEGED') %}
+                <a class="ms-auto text-black text-decoration-none" href="{{ path('creationCommissionTemporaire') }}" role="button" aria-expanded="false"><b>+</b></a>
+            {% endif %}
         </div>
 
         <div class="overflow-y-auto" style="height: calc(5 * 2.55rem);">       {# 1 ligne = 2.55rem #}
@@ -179,7 +185,7 @@
                                     {% if commissionTemporaire not in commissionTemporaireNotifActive %}
                                         <a>🔕</a>
                                     {% endif %}
-                                    <a class="navbar-toggler" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
+                                    <a class="navbar-toggler text-decoration-none" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" href="#">Modifier la commission</a></li>
                                     </ul>
@@ -198,7 +204,7 @@
                                         <!-- Les notifications sont désactivées-->
                                         <a>🔕</a>
                                     {% endif %}
-                                    <a class="navbar-toggler" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
+                                    <a class="navbar-toggler text-decoration-none" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" href="#">Modifier la commission</a></li>
                                     </ul>
@@ -216,8 +222,11 @@
 
     <div class="card">
 
-        <div class="card-header">
+        <div class="card-header d-flex justify-content-between align-items-center">
             <b>Commissions Temporaires clos 🔐</b>
+            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_PRIVILEGED') %}
+                <a class="ms-auto text-black text-decoration-none" href="{{ path('creationCommissionTemporaire') }}" role="button" aria-expanded="false"><b>+</b></a>
+            {% endif %}
         </div>
 
         <div class="overflow-y-auto" style="height: calc(5 * 2.55rem);">       {# 1 ligne = 2.55rem #}
@@ -237,7 +246,7 @@
                                     {% if commissionTemporaire not in commissionTemporaireNotifActive %}
                                         <a>🔕</a>
                                     {% endif %}
-                                    <a class="navbar-toggler" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
+                                    <a class="navbar-toggler text-decoration-none" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" href="#">Modifier la commission</a></li>
                                     </ul>
@@ -256,7 +265,7 @@
                                         <!-- Les notifications sont désactivées-->
                                         <a>🔕</a>
                                     {% endif %}
-                                    <a class="navbar-toggler" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
+                                    <a class="navbar-toggler text-decoration-none" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" href="#">Modifier la commission</a></li>
                                     </ul>
