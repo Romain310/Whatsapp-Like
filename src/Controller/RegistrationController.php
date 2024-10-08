@@ -23,6 +23,8 @@ class RegistrationController extends AbstractController
     {
         $user = new User();
         $user->setRoles(['ROLE_USER']);
+        $user->setActif(false); // Définit l'utilisateur comme inactif (0)
+
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 

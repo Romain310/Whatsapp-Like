@@ -65,8 +65,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: MessageLu::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $messagesLus;
 
-    #[ORM\Column]
-    private ?bool $actif = null;
+    #[ORM\Column(type: 'boolean')]
+    private $actif = false; // false correspond à 0
 
     public function __construct()
     {
@@ -296,7 +296,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->actif;
     }
 
-    public function setActif(bool $actif): static
+    public function setActif(bool $actif): self
     {
         $this->actif = $actif;
 
