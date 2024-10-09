@@ -11,8 +11,12 @@
         <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarSupportedContent">
 
             <div class="d-flex align-items-center">
-                {% if is_granted('ROLE_ADMIN') %}
-                    <!-- Bouton admin avec marge à droite -->
+
+                {% if app.request.pathInfo != '/' %}
+                    <a class="btn btn-primary ms-2" href="{{ path('home') }}">Retour à l'accueil</a>
+                {% endif %}
+
+                {% if "/admin" not in app.request.pathInfo and is_granted('ROLE_ADMIN') %}
                     <a class="btn btn-primary ms-2" href="{{ path('admin') }}">Pannel d'administration</a>
                 {% endif %}
 

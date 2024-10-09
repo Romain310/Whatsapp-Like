@@ -3,9 +3,13 @@
 {% block title %}Création Commission Temporaire{% endblock %}
 
 {% block body %}
+
+    {% include 'index/index-navbar-lg.html.twig' %}
+
     <div class="content">
+
         <h1>Création Commission Temporaire</h1>
-        <a class="button back-button" href="{{ path('home') }}">Retour à l'index</a>
+
         {{ form_start(commissionTemporaireForm, {'attr': {'class': 'border border-light p-2 border-2 rounded-2 m-auto'}}) }}
         <div class="mb-2">
             {{ form_label(commissionTemporaireForm.libelle, 'Libellé', {'label_attr': {'class': 'col-form-label'}}) }}

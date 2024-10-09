@@ -3,9 +3,11 @@
 {% block title %}Panneau d'administration{% endblock %}
 
 {% block body %}
+
+{% include 'index/index-navbar-lg.html.twig' %}
+
 <div class="content">
-    <a class="button back-button" href="{{ path('home') }}">Retour à l'index</a>
-    <h1>Panneau d'administration</h1>
+
     <h4>Liste des utilisateurs de WhatsApp-Like</h4>
 
     <div class="table-responsive">
