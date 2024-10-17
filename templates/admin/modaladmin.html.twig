@@ -1,0 +1,56 @@
+<!-- Modale pour la modification de l'utilisateur -->
+<div class="modal fade" id="editModal{{ user.id }}" tabindex="-1" aria-labelledby="editModalLabel{{ user.id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel{{ user.id }}">Modifier l'utilisateur</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Formulaire de modification -->
+                <form method="post" action="{{ path('admin_edit', {id: user.id}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('edit-user-' ~ user.id) }}">
+
+                    <div class="mb-3">
+                        <label for="nom{{ user.id }}" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="nom{{ user.id }}" name="nom" value="{{ user.nom }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="prenom{{ user.id }}" class="form-label">Prénom</label>
+                        <input type="text" class="form-control" id="prenom{{ user.id }}" name="prenom" value="{{ user.prenom }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="mail{{ user.id }}" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="mail{{ user.id }}" name="mail" value="{{ user.mail }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="role{{ user.id }}" class="form-label">Rôle</label>
+                        <select class="form-control" id="role{{ user.id }}" name="roles[]" multiple>
+                            <option value="ROLE_USER" {% if 'ROLE_USER' in user.roles %}selected{% endif %}>Utilisateur</option>
+                            <option value="ROLE_ADMIN" {% if 'ROLE_ADMIN' in user.roles %}selected{% endif %}>Administrateur</option>
+                        </select>
+                    </div>
+
+                    <!-- Nouveau champ pour le statut Actif/Désactivé -->
+                    <div class="mb-3 form-check">
+                        <!-- Champ caché pour envoyer la valeur 1 (désactivé) si la checkbox n'est pas cochée -->
+                        <input type="hidden" name="actif" value="1">
+
+                        <!-- Checkbox pour indiquer que le compte est actif (valeur 0) -->
+                        <input type="checkbox" class="form-check-input" id="actif{{ user.id }}" name="actif" value="0" {% if user.actif == 0 %}checked{% endif %}>
+                        <label class="form-check-label" for="actif{{ user.id }}">Compte Actif</label>
+                    </div>
+
+                    <!-- Boutons Annuler et Valider -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-primary">Valider</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
