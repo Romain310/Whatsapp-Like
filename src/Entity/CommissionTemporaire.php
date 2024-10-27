@@ -37,6 +37,10 @@ class CommissionTemporaire
     #[ORM\OneToMany(targetEntity: NotificationCommissionTemporaire::class, mappedBy: 'commissionTemporaire', cascade: ['persist'], orphanRemoval: true)]
     private Collection $notificationsUsers;
 
+    #[ORM\ManyToOne(inversedBy: 'commissionsTemporairesCreees')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $createur = null;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
@@ -137,6 +141,18 @@ class CommissionTemporaire
                 $notificationsUser->setCommissionTemporaire(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreateur(): ?User
+    {
+        return $this->createur;
+    }
+
+    public function setCreateur(?User $createur): static
+    {
+        $this->createur = $createur;
 
         return $this;
     }

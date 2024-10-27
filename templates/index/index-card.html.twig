@@ -105,7 +105,11 @@
                                 <a class="navbar-toggler text-decoration-none" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
                                 <ul class="dropdown-menu">
                                     {% if commissionTemporaire in commissionTemporaireNotifActive %}
-                                        <li><a class="dropdown-item" href="{{ path('gestionNotifications') }}">Désactiver les notifications</a></li>
+                                        {% if app.user == commissionTemporaire.createur %}
+                                            <li><a class="dropdown-item disabled" href="{{ path('gestionNotifications') }}">Désactiver les notifications</a></li>
+                                        {% else %}
+                                            <li><a class="dropdown-item" href="{{ path('gestionNotifications') }}">Désactiver les notifications</a></li>
+                                        {% endif %}
                                         <li><a class="dropdown-item" href="#">Marquer tout comme lu</a></li>
                                     {% else %}
                                         <li><a class="dropdown-item" href="{{ path('gestionNotifications') }}">Activer les notifications</a></li>
@@ -133,7 +137,11 @@
                                 <a class="navbar-toggler text-decoration-none" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
                                 <ul class="dropdown-menu">
                                     {% if commissionTemporaire in commissionTemporaireNotifActive %}
-                                        <li><a class="dropdown-item" href="{{ path('gestionNotifications') }}">Désactiver les notifications</a></li>
+                                        {% if app.user == commissionTemporaire.createur %}
+                                            <li><a class="dropdown-item disabled" href="{{ path('gestionNotifications') }}">Désactiver les notifications</a></li>
+                                        {% else %}
+                                            <li><a class="dropdown-item" href="{{ path('gestionNotifications') }}">Désactiver les notifications</a></li>
+                                        {% endif %}
                                         <li><a class="dropdown-item" href="#">Marquer tout comme lu</a></li>
                                     {% else %}
                                         <li><a class="dropdown-item" href="{{ path('gestionNotifications') }}">Activer les notifications</a></li>

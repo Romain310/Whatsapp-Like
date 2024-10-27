@@ -15,17 +15,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class ComissionTemporaireController extends AbstractController
 {
     #[Route('/creationCommissionTemporaire', name: 'creationCommissionTemporaire')]
-    public function creationCommissionTemporaire(Request $request,EntityManagerInterface $entityManager): Response
+    public function creationCommissionTemporaire(Request $request, EntityManagerInterface $entityManager): Response
     {
         $userRepository = $entityManager->getRepository(User::class);
+
+        $user = $this->getUser();
 
         $commissionTemporaire = new CommissionTemporaire();
         $commissionTemporaire->setDebut(new \DateTimeImmutable('now'));
         $commissionTemporaire->setCloture(new \DateTimeImmutable('tomorrow'));
+        $commissionTemporaire->setCreateur($user);
 
         $form = $this->createForm(CommissionTemporaireFormType::class, $commissionTemporaire);
         $form->handleRequest($request);

@@ -66,7 +66,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $messagesLus;
 
     #[ORM\Column(type: 'boolean')]
-    private $actif = false; // false correspond à 0
+    private $actif = false;
+
+    /**
+     * @var Collection<int, CommissionTemporaire>
+     */
+    #[ORM\OneToMany(targetEntity: CommissionTemporaire::class, mappedBy: 'createur')]
+    private Collection $commissionsTemporairesCreees; // false correspond à 0
 
     public function __construct()
     {
@@ -74,6 +80,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->notificationsCommissions = new ArrayCollection();
         $this->notificationsCommissionsTemporaires = new ArrayCollection();
         $this->messagesLus = new ArrayCollection();
+        $this->commissionsTemporairesCreees = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -299,6 +306,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setActif(bool $actif): self
     {
         $this->actif = $actif;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CommissionTemporaire>
+     */
+    public function getCommissionsTemporairesCreees(): Collection
+    {
+        return $this->commissionsTemporairesCreees;
+    }
+
+    public function addCommissionsTemporairesCreee(CommissionTemporaire $commissionsTemporairesCreee): static
+    {
+        if (!$this->commissionsTemporairesCreees->contains($commissionsTemporairesCreee)) {
+            $this->commissionsTemporairesCreees->add($commissionsTemporairesCreee);
+            $commissionsTemporairesCreee->setCreateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommissionsTemporairesCreee(CommissionTemporaire $commissionsTemporairesCreee): static
+    {
+        if ($this->commissionsTemporairesCreees->removeElement($commissionsTemporairesCreee)) {
+            // set the owning side to null (unless already changed)
+            if ($commissionsTemporairesCreee->getCreateur() === $this) {
+                $commissionsTemporairesCreee->setCreateur(null);
+            }
+        }
 
         return $this;
     }
