@@ -2,7 +2,7 @@
 
 {# Formulaire envoi de messages #}
 
-<form action="/sendMessage" method="post">
+<form action="/sendMessage" method="post" id="messageForm">
     <input type="hidden" name="user" value="{{ app.user.id }}">
     {% if commissionSelected|default(null) %}
         <input type="hidden" name="commission" value="{{ commissionSelected.id }}">
@@ -10,13 +10,23 @@
     {% if commissionTemporaireSelected|default(null) %}
         <input type="hidden" name="commissionTemporaire" value="{{ commissionTemporaireSelected.id }}">
     {% endif %}
-    <input type="hidden">
     <div class="fixed-bottom p-2">
         <div class="input-group">
-            <input name="message" type="text" class="form-control" placeholder="Message" aria-label="Message" aria-describedby="basic-addon2">
+            <textarea name="message" class="form-control" placeholder="Message" aria-label="Message" aria-describedby="basic-addon2" required rows="2" maxlength="255" style="resize: none;" id="messageTextarea"></textarea>
             <div class="input-group-append align-content-center">
                 <input class="btn btn-success bg-gradient" value="Envoyer" type="submit">
             </div>
         </div>
     </div>
 </form>
+
+{# Script pour permettre le retour à la ligne avec shift + entrée #}
+
+<script>
+    document.getElementById('messageTextarea').addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            document.getElementById('messageForm').submit();
+        }
+    });
+</script>
