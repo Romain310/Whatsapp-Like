@@ -1,6 +1,6 @@
 <?php
 
-// src/Controller/AdminController.php
+// src/Controller/ComissionTemporaireController.php
 
 namespace App\Controller;
 
@@ -35,20 +35,26 @@ class ComissionTemporaireController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $users = $userRepository->findAll();
-            foreach ($users as $user) {
-                $notificationCommissionTemporaire = new NotificationCommissionTemporaire();
-                $notificationCommissionTemporaire->setUser($user);
-                $notificationCommissionTemporaire->setActive(true);
-                $notificationCommissionTemporaire->setCommissionTemporaire($commissionTemporaire);
-                $commissionTemporaire->addNotificationsUser($notificationCommissionTemporaire);
+            $debut = $commissionTemporaire->getDebut();
+            $cloture = $commissionTemporaire->getCloture();
+            if ($cloture < $debut) {
+                $this->addFlash('error', 'La date de clôture doit être postérieure à la date de début.');
+            } else {
+                $users = $userRepository->findAll();
+                foreach ($users as $user) {
+                    $notificationCommissionTemporaire = new NotificationCommissionTemporaire();
+                    $notificationCommissionTemporaire->setUser($user);
+                    $notificationCommissionTemporaire->setActive(true);
+                    $notificationCommissionTemporaire->setCommissionTemporaire($commissionTemporaire);
+                    $commissionTemporaire->addNotificationsUser($notificationCommissionTemporaire);
+                }
+                $entityManager->persist($commissionTemporaire);
+                $entityManager->flush();
+                return $this->redirectToRoute('home');
             }
-            $entityManager->persist($commissionTemporaire);
-            $entityManager->flush();
         }
         return $this->render('commissionTemporaire.html.twig', [
             'commissionTemporaireForm' => $form,
         ]);
     }
 }
-
