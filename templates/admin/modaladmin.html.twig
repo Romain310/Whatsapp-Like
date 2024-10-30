@@ -29,7 +29,8 @@
                     <div class="mb-3">
                         <label for="role{{ user.id }}" class="form-label">Rôle</label>
                         <select class="form-control" id="role{{ user.id }}" name="roles[]" multiple>
-                            <option value="ROLE_USER" {% if 'ROLE_USER' in user.roles %}selected{% endif %}>Utilisateur</option>
+                            <option value="ROLE_USER" {% if 'ROLE_USER' in user.roles %}selected{% endif %}>Normal</option>
+                            <option value="ROLE_PRIVILEGED" {% if 'ROLE_PRIVILEGED' in user.roles %}selected{% endif %}>Privilégié</option>
                             <option value="ROLE_ADMIN" {% if 'ROLE_ADMIN' in user.roles %}selected{% endif %}>Administrateur</option>
                         </select>
                     </div>
