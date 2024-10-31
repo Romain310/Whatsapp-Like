@@ -163,124 +163,94 @@
 
 <hr class="opacity-0">
 
-{# Commission temporaire à venir / clos #}
+{# Commission temporaire à venir #}
 
-{% if is_granted('ROLE_ADMIN') %}
+{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_PRIVILEGED') %}
 
     <div class="card">
 
-        <div class="card-header d-flex justify-content-between align-items-center">
+        <div class="card-header d-flex">
             <b>Commissions Temporaires à venir 🕒</b>
             {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_PRIVILEGED') %}
                 <a class="ms-auto text-black text-decoration-none" href="{{ path('creationCommissionTemporaire') }}" role="button" aria-expanded="false"><b>+</b></a>
             {% endif %}
         </div>
 
-        <div class="overflow-y-auto" style="height: calc(5 * 2.55rem);">       {# 1 ligne = 2.55rem #}
+        <div class="overflow-y-auto" style="height: calc(5 * 2.55rem);">
             <ul class="list-group list-group-flush">
+                {% set ExisteCommissionFutur = false %}
 
-                {# Affichage message si aucune commission trouvée #}
-                {% if commissionsTemporaireFutur|length == 0 %}
-                    <li class="list-group-item"><b>Aucune commission disponible</b></li>
-                {% else %}
+                {# Affichage des commissions trouvées #}
+                {% for commission in commissionsTemporaireFutur %}
+                    {% if is_granted('ROLE_ADMIN') or app.user == commission.createur %}
+                        {% set ExisteCommissionFutur = true %}
+                        <li class="list-group-item d-flex {% if "/commission-clos/" ~ commission.id == app.request.pathInfo %}active{% endif %}">
+                            <a {% if "/commission-clos/" ~ commission.id != app.request.pathInfo %}href="/commission-clos/{{ commission.id }}"{% endif %}>{{ commission.libelle }}</a>
+                            <div class="d-inline ms-auto">
+                                {% if commission not in commissionTemporaireNotifActive %}
+                                    <a>🔕</a>
+                                {% elseif commission.id in messageNonLuCommissionTemporaire %}
+                                    <span class="badge text-bg-secondary">{{ messageNonLuCommissionTemporaire[commission.id] }}</span>
+                                {% endif %}
+                                <a class="navbar-toggler text-decoration-none" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Modifier la commission</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    {% endif %}
+                {% endfor %}
 
-                    {# Affichage des commission trouvée #}
-                    {% for commissionTemporaire in commissionsTemporaireFutur %}
-                        {% if "/commission-clos/" ~ commissionTemporaire.id == app.request.pathInfo %}
-                            <li class="list-group-item active d-flex">
-                                <a>{{ commissionTemporaire.libelle }}</a>
-                                <div class="d-inline ms-auto">
-                                    {% if commissionTemporaire not in commissionTemporaireNotifActive %}
-                                        <a>🔕</a>
-                                    {% endif %}
-                                    <a class="navbar-toggler text-decoration-none" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">Modifier la commission</a></li>
-                                    </ul>
-                                </div>
-                            </li>
-                        {% else %}
-                            <li class="list-group-item d-flex">
-                                <a href="/commission-clos/{{ commissionTemporaire.id }}">{{ commissionTemporaire.libelle }}</a>
-                                <div class="d-inline ms-auto">
-                                    {% if commissionTemporaire in commissionTemporaireNotifActive %}
-                                        <!-- Affichage du nombre de message non lu -->
-                                        {% if commissionTemporaire.id in messageNonLuCommissionTemporaire|keys %}
-                                            <span class="badge text-bg-secondary">{{ messageNonLuCommissionTemporaire[commissionTemporaire.id] }}</span>
-                                        {% endif %}
-                                    {% else %}
-                                        <!-- Les notifications sont désactivées-->
-                                        <a>🔕</a>
-                                    {% endif %}
-                                    <a class="navbar-toggler text-decoration-none" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">Modifier la commission</a></li>
-                                    </ul>
-                                </div>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
+                {# Message si aucune commission n'a été trouvée #}
+                {% if not ExisteCommissionFutur %}
+                    <b class="text-center">Aucune commission disponible</b>
                 {% endif %}
+
             </ul>
         </div>
 
     </div>
 
-    <hr class="opacity-0">
+{% endif %}
+
+<hr class="opacity-0">
+
+{# Commission temporaire clos #}
+
+{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_PRIVILEGED') %}
 
     <div class="card">
 
-        <div class="card-header d-flex justify-content-between align-items-center">
+        <div class="card-header d-flex">
             <b>Commissions Temporaires clos 🔐</b>
-            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_PRIVILEGED') %}
-                <a class="ms-auto text-black text-decoration-none" href="{{ path('creationCommissionTemporaire') }}" role="button" aria-expanded="false"><b>+</b></a>
-            {% endif %}
         </div>
 
-        <div class="overflow-y-auto" style="height: calc(5 * 2.55rem);">       {# 1 ligne = 2.55rem #}
+        <div class="overflow-y-auto" style="height: calc(5 * 2.55rem);">
             <ul class="list-group list-group-flush">
-
-                {# Affichage message si aucune commission trouvée #}
-                {% if commissionsTemporaireClos|length == 0 %}
-                    <li class="list-group-item"><b>Aucune commission disponible</b></li>
-                {% else %}
-
-                    {# Affichage des commission trouvée #}
-                    {% for commissionTemporaire in commissionsTemporaireClos %}
-                        {% if "/commission-clos/" ~ commissionTemporaire.id == app.request.pathInfo %}
-                            <li class="list-group-item active d-flex">
-                                <a>{{ commissionTemporaire.libelle }}</a>
-                                <div class="d-inline ms-auto">
-                                    {% if commissionTemporaire not in commissionTemporaireNotifActive %}
-                                        <a>🔕</a>
-                                    {% endif %}
-                                    <a class="navbar-toggler text-decoration-none" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">Modifier la commission</a></li>
-                                    </ul>
-                                </div>
-                            </li>
-                        {% else %}
-                            <li class="list-group-item d-flex">
-                                <a href="/commission-clos/{{ commissionTemporaire.id }}">{{ commissionTemporaire.libelle }}</a>
-                                <div class="d-inline ms-auto">
-                                    {% if commissionTemporaire in commissionTemporaireNotifActive %}
-                                        <!-- Affichage du nombre de message non lu -->
-                                        {% if commissionTemporaire.id in messageNonLuCommissionTemporaire|keys %}
-                                            <span class="badge text-bg-secondary">{{ messageNonLuCommissionTemporaire[commissionTemporaire.id] }}</span>
-                                        {% endif %}
-                                    {% else %}
-                                        <!-- Les notifications sont désactivées-->
-                                        <a>🔕</a>
-                                    {% endif %}
-                                    <a class="navbar-toggler text-decoration-none" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">Modifier la commission</a></li>
-                                    </ul>
-                                </div>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
+                {% set ExisteCommissionClos = false %}
+                {# Affichage des commissions trouvées #}
+                {% for commission in commissionsTemporaireClos %}
+                    {% if is_granted('ROLE_ADMIN') or app.user == commission.createur %}
+                        {% set ExisteCommissionClos = true %}
+                        <li class="list-group-item d-flex {% if "/commission-clos/" ~ commission.id == app.request.pathInfo %}active{% endif %}">
+                            <a {% if "/commission-clos/" ~ commission.id != app.request.pathInfo %}href="/commission-clos/{{ commission.id }}"{% endif %}>{{ commission.libelle }}</a>
+                            <div class="d-inline ms-auto">
+                                {% if commission not in commissionTemporaireNotifActive %}
+                                    <a>🔕</a>
+                                {% elseif commission.id in messageNonLuCommissionTemporaire %}
+                                    <span class="badge text-bg-secondary">{{ messageNonLuCommissionTemporaire[commission.id] }}</span>
+                                {% endif %}
+                                <a class="navbar-toggler text-decoration-none" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Modifier la commission</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                {# Message si aucune commission n'a été trouvée #}
+                {% if not ExisteCommissionClos %}
+                    <b class="text-center">Aucune commission disponible</b>
                 {% endif %}
             </ul>
         </div>
