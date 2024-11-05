@@ -12,7 +12,7 @@
 
             <div class="d-flex align-items-center">
 
-                {% if app.request.pathInfo != '/' %}
+                {% if "/admin" in app.request.pathInfo or "/creationCommissionTemporaire" in app.request.pathInfo %}
                     <a class="btn btn-primary ms-2" href="{{ path('home') }}">Retour à l'accueil</a>
                 {% endif %}
 
