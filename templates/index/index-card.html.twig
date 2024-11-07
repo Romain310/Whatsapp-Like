@@ -20,7 +20,7 @@
 
                 {# Affichage des commission trouvée #}
                 {% for commission in commissions %}
-                    {% if commission.libelle in app.request.pathInfo  %}
+                    {% if commission.libelle in app.request.pathInfo or ("/commission" not in app.request.pathInfo and commission.libelle == "General") %}
                         {# Si la commission est la page actuelle #}
                         <li class="list-group-item active d-flex">
                             <a>{{ commission.libelle }} {{ commission.icone }}</a>
@@ -31,9 +31,9 @@
                                 <a class="navbar-toggler text-decoration-none" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
                                 <ul class="dropdown-menu">
                                     {% if commission in commissionNotifActive %}
-                                        <li><a class="dropdown-item" href="{{ path('gestionNotifications') }}">Désactiver les notifications</a></li>
+                                        <li><a class="dropdown-item" href="{{ path('gestionNotificationCommission', {userID: app.user.id, commissionID: commission.id, active: false}) }}">Désactiver les notifications</a></li>
                                     {% else %}
-                                        <li><a class="dropdown-item" href="{{ path('gestionNotifications') }}">Activer les notifications</a></li>
+                                        <li><a class="dropdown-item" href="{{ path('gestionNotificationCommission', {userID: app.user.id, commissionID: commission.id, active: true}) }}">Activer les notifications</a></li>
                                     {% endif %}
                                 </ul>
                             </div>
@@ -55,9 +55,9 @@
                                 <a class="navbar-toggler text-decoration-none" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
                                 <ul class="dropdown-menu">
                                     {% if commission in commissionNotifActive %}
-                                        <li><a class="dropdown-item" href="{{ path('gestionNotifications') }}">Désactiver les notifications</a></li>
+                                        <li><a class="dropdown-item" href="{{ path('gestionNotificationCommission', {userID: app.user.id, commissionID: commission.id, active: false}) }}">Désactiver les notifications</a></li>
                                     {% else %}
-                                        <li><a class="dropdown-item" href="{{ path('gestionNotifications') }}">Activer les notifications</a></li>
+                                        <li><a class="dropdown-item" href="{{ path('gestionNotificationCommission', {userID: app.user.id, commissionID: commission.id, active: true}) }}">Activer les notifications</a></li>
                                     {% endif %}
                                 </ul>
                             </div>
@@ -104,12 +104,12 @@
                                 <ul class="dropdown-menu">
                                     {% if commissionTemporaire in commissionTemporaireNotifActive %}
                                         {% if app.user == commissionTemporaire.createur %}
-                                            <li><a class="dropdown-item disabled" href="{{ path('gestionNotifications') }}">Désactiver les notifications</a></li>
+                                            <li><a class="dropdown-item disabled" href="{{ path('gestionNotificationCommissionTemporaire', {userID: app.user.id, commissionTemporaireID: commissionTemporaire.id, active: false}) }}">Désactiver les notifications</a></li>
                                         {% else %}
-                                            <li><a class="dropdown-item" href="{{ path('gestionNotifications') }}">Désactiver les notifications</a></li>
+                                            <li><a class="dropdown-item" href="{{ path('gestionNotificationCommissionTemporaire', {userID: app.user.id, commissionTemporaireID: commissionTemporaire.id, active: false}) }}">Désactiver les notifications</a></li>
                                         {% endif %}
                                     {% else %}
-                                        <li><a class="dropdown-item" href="{{ path('gestionNotifications') }}">Activer les notifications</a></li>
+                                        <li><a class="dropdown-item" href="{{ path('gestionNotificationCommissionTemporaire', {userID: app.user.id, commissionTemporaireID: commissionTemporaire.id, active: true}) }}">Activer les notifications</a></li>
                                     {% endif %}
                                     {% if is_granted('ROLE_ADMIN') %}
                                         <li><hr class="dropdown-divider"></li>
@@ -135,12 +135,12 @@
                                 <ul class="dropdown-menu">
                                     {% if commissionTemporaire in commissionTemporaireNotifActive %}
                                         {% if app.user == commissionTemporaire.createur %}
-                                            <li><a class="dropdown-item disabled" href="{{ path('gestionNotifications') }}">Désactiver les notifications</a></li>
+                                            <li><a class="dropdown-item disabled" href="{{ path('gestionNotificationCommissionTemporaire', {userID: app.user.id, commissionTemporaireID: commissionTemporaire.id, active: false}) }}">Désactiver les notifications</a></li>
                                         {% else %}
-                                            <li><a class="dropdown-item" href="{{ path('gestionNotifications') }}">Désactiver les notifications</a></li>
+                                            <li><a class="dropdown-item" href="{{ path('gestionNotificationCommissionTemporaire', {userID: app.user.id, commissionTemporaireID: commissionTemporaire.id, active: false}) }}">Désactiver les notifications</a></li>
                                         {% endif %}
                                     {% else %}
-                                        <li><a class="dropdown-item" href="{{ path('gestionNotifications') }}">Activer les notifications</a></li>
+                                        <li><a class="dropdown-item" href="{{ path('gestionNotificationCommissionTemporaire', {userID: app.user.id, commissionTemporaireID: commissionTemporaire.id, active: true}) }}">Activer les notifications</a></li>
                                     {% endif %}
                                     {% if is_granted('ROLE_ADMIN') %}
                                         <li><hr class="dropdown-divider"></li>
