@@ -25,8 +25,9 @@
                     <div>
                         {% if 'ROLE_USER' in message.user.roles %}
                             <span class="badge rounded-pill text-bg-primary">Utilisateur</span>
-                        {% endif %}
-                        {% if 'ROLE_ADMIN' in message.user.roles %}
+                        {% elseif 'ROLE_PRIVILEGED' in message.user.roles %}
+                            <span class="badge rounded-pill text-bg-primary">Utilisateur privilégié</span>
+                        {% elseif 'ROLE_ADMIN' in message.user.roles %}
                             <span class="badge rounded-pill text-bg-danger">Admin</span>
                         {% endif %}
                         <b>{{ message.user.nom }} {{ message.user.prenom }}:</b>
@@ -49,8 +50,9 @@
                     <div>
                         {% if 'ROLE_USER' in message.user.roles %}
                             <span class="badge rounded-pill text-bg-primary">Utilisateur</span>
-                        {% endif %}
-                        {% if 'ROLE_ADMIN' in message.user.roles %}
+                        {% elseif 'ROLE_PRIVILEGED' in message.user.roles %}
+                            <span class="badge rounded-pill text-bg-primary">Utilisateur privilégié</span>
+                        {% elseif 'ROLE_ADMIN' in message.user.roles %}
                             <span class="badge rounded-pill text-bg-danger">Admin</span>
                         {% endif %}
                         <b>{{ message.user.nom }} {{ message.user.prenom }}:</b>
