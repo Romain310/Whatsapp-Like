@@ -111,10 +111,6 @@
                                     {% else %}
                                         <li><a class="dropdown-item" href="{{ path('gestionNotificationCommissionTemporaire', {userID: app.user.id, commissionTemporaireID: commissionTemporaire.id, active: true}) }}">Activer les notifications</a></li>
                                     {% endif %}
-                                    {% if is_granted('ROLE_ADMIN') %}
-                                        <li><hr class="dropdown-divider"></li>
-                                        <li><a class="dropdown-item" href="#">Modifier la commission</a></li>
-                                    {% endif %}
                                 </ul>
                             </div>
                         </li>
@@ -141,10 +137,6 @@
                                         {% endif %}
                                     {% else %}
                                         <li><a class="dropdown-item" href="{{ path('gestionNotificationCommissionTemporaire', {userID: app.user.id, commissionTemporaireID: commissionTemporaire.id, active: true}) }}">Activer les notifications</a></li>
-                                    {% endif %}
-                                    {% if is_granted('ROLE_ADMIN') %}
-                                        <li><hr class="dropdown-divider"></li>
-                                        <li><a class="dropdown-item" href="#">Modifier la commission</a></li>
                                     {% endif %}
                                 </ul>
                             </div>
@@ -188,10 +180,6 @@
                                 {% elseif commission.id in messageNonLuCommissionTemporaire %}
                                     <span class="badge text-bg-secondary">{{ messageNonLuCommissionTemporaire[commission.id] }}</span>
                                 {% endif %}
-                                <a class="navbar-toggler text-decoration-none" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Modifier la commission</a></li>
-                                </ul>
                             </div>
                         </li>
                     {% endif %}
@@ -236,10 +224,6 @@
                                 {% elseif commission.id in messageNonLuCommissionTemporaire %}
                                     <span class="badge text-bg-secondary">{{ messageNonLuCommissionTemporaire[commission.id] }}</span>
                                 {% endif %}
-                                <a class="navbar-toggler text-decoration-none" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Modifier la commission</a></li>
-                                </ul>
                             </div>
                         </li>
                     {% endif %}
