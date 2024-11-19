@@ -31,7 +31,7 @@
                                 <a class="navbar-toggler text-decoration-none" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
                                 <ul class="dropdown-menu">
                                     {% if commission in commissionNotifActive %}
-                                        <li><a class="dropdown-item" href="{{ path('gestionNotificationCommission', {userID: app.user.id, commissionID: commission.id, active: false}) }}">Désactiver les notifications</a></li>
+                                        <li><a class="dropdown-item {% if commission.libelle == "General" %}disabled{% endif %}" href="{{ path('gestionNotificationCommission', {userID: app.user.id, commissionID: commission.id, active: false}) }}">Désactiver les notifications</a></li>
                                     {% else %}
                                         <li><a class="dropdown-item" href="{{ path('gestionNotificationCommission', {userID: app.user.id, commissionID: commission.id, active: true}) }}">Activer les notifications</a></li>
                                     {% endif %}
@@ -55,7 +55,7 @@
                                 <a class="navbar-toggler text-decoration-none" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>...</b></a>
                                 <ul class="dropdown-menu">
                                     {% if commission in commissionNotifActive %}
-                                        <li><a class="dropdown-item" href="{{ path('gestionNotificationCommission', {userID: app.user.id, commissionID: commission.id, active: false}) }}">Désactiver les notifications</a></li>
+                                        <li><a class="dropdown-item {% if commission.libelle == "General" %}disabled{% endif %}" href="{{ path('gestionNotificationCommission', {userID: app.user.id, commissionID: commission.id, active: false}) }}">Désactiver les notifications</a></li>
                                     {% else %}
                                         <li><a class="dropdown-item" href="{{ path('gestionNotificationCommission', {userID: app.user.id, commissionID: commission.id, active: true}) }}">Activer les notifications</a></li>
                                     {% endif %}
