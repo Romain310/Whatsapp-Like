@@ -24,6 +24,7 @@ security:
             logout:
                 path: app_logout
             access_denied_url: /accesinterdit
+            user_checker: App\Security\UserChecker # Lien vers le UserChecker
               # where to redirect after logout
             # target: app_any_route
 
